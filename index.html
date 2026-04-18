@@ -3,208 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الخزنة السرية | Secret Vault ❤️</title>
+    <title>الخزنة السرية ❤️</title>
     <style>
-        :root {
-            --primary-color: #ff4d6d;
-            --glass: rgba(255, 255, 255, 0.15);
-        }
-
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: radial-gradient(circle, #ffb3c1, #ff4d6d, #c9184a);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            overflow: hidden;
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* الشاشة الأولى - القفل */
+        :root { --primary: #ff4d6d; --glass: rgba(255, 255, 255, 0.2); }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: sans-serif; overflow: hidden; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, #ffb3c1, #ff4d6d); }
+        
         #lock-screen { text-align: center; z-index: 10; }
+        .heart-svg { width: 130px; cursor: pointer; filter: drop-shadow(0 0 10px white); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        
+        #password-box { display: none; background: var(--glass); backdrop-filter: blur(15px); padding: 30px; border-radius: 25px; border: 1px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 280px; }
+        input { padding: 12px; border-radius: 12px; border: none; width: 90%; text-align: center; font-size: 20px; margin-bottom: 15px; outline: none; color: #c9184a; font-weight: bold; }
+        button { background: #c9184a; color: white; border: none; padding: 12px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        button:hover { background: #ff4d6d; }
 
-        /* حركة القلب الذي يرسم نفسه */
-        .heart-svg {
-            width: 150px; cursor: pointer;
-            filter: drop-shadow(0 0 15px rgba(255,255,255,0.6));
-            transition: transform 0.3s;
-        }
-        .heart-svg:hover { transform: scale(1.1); }
-
-        .heart-path {
-            fill: none; stroke: white; stroke-width: 2;
-            stroke-dasharray: 1000; stroke-dashoffset: 1000;
-            animation: drawHeart 4s linear infinite;
-        }
-
-        @keyframes drawHeart {
-            0%, 100% { stroke-dashoffset: 1000; opacity: 0; }
-            50% { stroke-dashoffset: 0; opacity: 1; }
-        }
-
-        /* صندوق الرمز */
-        #password-box {
-            display: none; background: var(--glass);
-            backdrop-filter: blur(15px); padding: 35px;
-            border-radius: 25px; border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-            animation: fadeIn 0.8s ease; width: 280px;
-        }
-
-        input {
-            background: rgba(255,255,255,0.9); border: none; padding: 15px;
-            border-radius: 12px; outline: none; text-align: center;
-            font-size: 18px; color: #c9184a; width: 90%;
-        }
-
-        button {
-            margin-top: 20px; background: #c9184a; color: white;
-            border: none; padding: 12px 30px; border-radius: 12px;
-            cursor: pointer; font-weight: bold; transition: 0.3s;
-            font-size: 16px; width: 100%;
-        }
-
-        /* الشاشة الثانية - المحتوى */
-        #secret-content {
-            display: none; text-align: center; color: white;
-            animation: openVault 1.2s cubic-bezier(0.17, 0.89, 0.32, 1.49);
-        }
-
-        @keyframes openVault {
-            from { transform: scale(0.5); opacity: 0; filter: blur(10px); }
-            to { transform: scale(1); opacity: 1; filter: blur(0); }
-        }
-
-        .user-img {
-            width: 220px; height: 220px; object-fit: cover;
-            border-radius: 50%; border: 6px solid white;
-            box-shadow: 0 0 35px rgba(255,255,255,0.5);
-            margin-bottom: 25px; animation: floating 4s ease-in-out infinite;
-        }
-
-        @keyframes floating {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(5deg); }
-        }
-
-        .message-box {
-            font-size: 22px; font-weight: bold; line-height: 1.6;
-            text-shadow: 2px 2px 15px rgba(0,0,0,0.4);
-            max-width: 90%; margin: 0 auto;
-            background: rgba(0,0,0,0.1); padding: 15px; border-radius: 15px;
-        }
-
-        .particle {
-            position: absolute; pointer-events: none;
-            animation: fly 3.5s linear forwards; z-index: 100;
-        }
-        @keyframes fly {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-100vh) scale(1.5) rotate(360deg); opacity: 0; }
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        #secret-content { display: none; text-align: center; color: white; animation: zoomIn 1s cubic-bezier(0.17, 0.89, 0.32, 1.49); }
+        .user-img { width: 220px; height: 220px; border-radius: 50%; border: 6px solid white; object-fit: cover; margin-bottom: 25px; box-shadow: 0 0 30px rgba(255,255,255,0.5); animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        
+        .message { font-size: 24px; font-weight: bold; background: rgba(0,0,0,0.15); padding: 20px; border-radius: 20px; max-width: 85%; margin: 0 auto; line-height: 1.5; }
+        
+        @keyframes zoomIn { from { transform: scale(0) rotate(-10deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
+        .heart-particle { position: absolute; pointer-events: none; animation: fly 3.5s linear forwards; font-size: 20px; }
+        @keyframes fly { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; } }
     </style>
 </head>
 <body>
 
     <div id="lock-screen">
         <svg class="heart-svg" viewBox="0 0 32 32" onclick="showInput()">
-            <path class="heart-path" d="M16 28.5L14.1 26.7C7.2 20.4 2.5 16.2 2.5 11C2.5 6.6 6 3.1 10.4 3.1C12.9 3.1 15.3 4.2 16.9 6.1C18.5 4.2 20.9 3.1 23.4 3.1C27.8 3.1 31.3 6.6 31.3 11C31.3 16.2 26.6 20.4 19.7 26.7L16 28.5Z"/>
+            <path fill="white" d="M16 28.5L14.1 26.7C7.2 20.4 2.5 16.2 2.5 11C2.5 6.6 6 3.1 10.4 3.1C12.9 3.1 15.3 4.2 16.9 6.1C18.5 4.2 20.9 3.1 23.4 3.1C27.8 3.1 31.3 6.6 31.3 11C31.3 16.2 26.6 20.4 19.7 26.7L16 28.5Z"/>
         </svg>
-        <p style="color: white; font-weight: bold; margin-top: 15px;">اضغط على القلب لفتح الخزنة ❤️</p>
-
+        <p style="color: white; font-weight: bold; margin-top: 15px; text-shadow: 0 2px 5px rgba(0,0,0,0.2);">اضغط على القلب ❤️</p>
+        
         <div id="password-box">
-            <h2 style="color: white; margin-bottom: 20px; font-size: 22px;">الرمز السري 🔒</h2>
-            <input type="text" id="passInput" placeholder="اكتب الرمز هنا...">
-            <br>
-            <button onclick="checkPassword()">دخول بجمال ✨</button>
+            <input type="text" id="passInput" placeholder="أدخل الرمز السرّي">
+            <button onclick="check()">فتح الخزنة ✨</button>
         </div>
     </div>
 
     <div id="secret-content">
         <img id="sharedImg" src="" class="user-img">
-        <div id="msgDisplay" class="message-box"></div>
+        <div id="msg" class="message"></div>
     </div>
 
     <script>
-        // الرمز الثابت
+        // الرمز الثابت كما طلبت
         const staticPass = "1X";
-        
-        // رابط الجدول للرسالة والصورة فقط
         const sheetID = "11vyohqnDbQf7CT3SQ_jVKoIkbjaHw_AY53buW4quQr4";
-        const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:csv`;
+        
+        // رابط التصدير المباشر (لا يحتاج لنشر على الويب، فقط يحتاج أن يكون الجدول عاماً)
+        const exportUrl = `https://docs.google.com/spreadsheets/d/${sheetID}/export?format=csv&gid=0`;
 
-        let imgUrl = "";
-        let secretMsg = "";
+        let dataImg = "", dataMsg = "";
 
-        async function loadData() {
+        // جلب البيانات فور تحميل الصفحة
+        async function fetchSheet() {
             try {
-                const res = await fetch(csvUrl);
-                const data = await res.text();
-                const rows = data.split('\n');
-                const targetRow = rows[1].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/); 
+                const response = await fetch(exportUrl);
+                const text = await response.text();
+                const rows = text.split('\n');
                 
-                // سحب الصورة والرسالة من الجدول (الرمز صار ثابت بالكود)
-                imgUrl = targetRow[1].replace(/^"|"$/g, "").trim();
-                secretMsg = targetRow[2].replace(/^"|"$/g, "").trim();
-            } catch (e) { console.error("فشل تحميل بيانات الجدول"); }
+                if (rows.length > 1) {
+                    // سحب البيانات من السطر الثاني وتوزيعها
+                    const columns = rows[1].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                    dataImg = columns[1].replace(/"/g, "").trim();
+                    dataMsg = columns[2].replace(/"/g, "").trim();
+                    console.log("البيانات جاهزة ✅");
+                }
+            } catch (error) {
+                console.error("فشل في جلب البيانات من الجدول.");
+            }
+        }
+        fetchSheet();
+
+        function showInput() { 
+            document.querySelector('.heart-svg').style.display='none';
+            document.querySelector('p').style.display='none';
+            document.getElementById('password-box').style.display='block'; 
         }
 
-        loadData();
-
-        function showInput() {
-            document.querySelector('.heart-svg').style.display = 'none';
-            document.querySelector('p').style.display = 'none';
-            document.getElementById('password-box').style.display = 'block';
-        }
-
-        function checkPassword() {
-            const userInput = document.getElementById('passInput').value.trim();
-            if (userInput === staticPass) {
-                unlockVault();
+        function check() {
+            const val = document.getElementById('passInput').value.trim();
+            if(val === staticPass) {
+                unlock();
             } else {
-                alert("الرمز خطأ! تذكر الرمز هو 1X ❤️");
+                alert("الرمز خطأ! حاول مجدداً ❤️");
                 document.getElementById('passInput').value = "";
             }
         }
 
-        function unlockVault() {
-            document.getElementById('lock-screen').style.display = 'none';
-            document.getElementById('secret-content').style.display = 'block';
-            document.getElementById('sharedImg').src = imgUrl;
+        function unlock() {
+            document.getElementById('lock-screen').style.display='none';
+            document.getElementById('secret-content').style.display='block';
+            
+            // وضع الصورة والرسالة من الجدول
+            document.getElementById('sharedImg').src = dataImg;
             
             let i = 0;
-            const speed = 80;
-            function typeWriter() {
-                if (i < secretMsg.length) {
-                    document.getElementById("msgDisplay").innerHTML += secretMsg.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, speed);
+            const targetMsg = dataMsg || "لا توجد رسالة حالياً";
+            function type() {
+                if(i < targetMsg.length) {
+                    document.getElementById('msg').innerHTML += targetMsg.charAt(i);
+                    i++; setTimeout(type, 80);
                 }
             }
-            typeWriter();
-            createHearts();
-        }
-
-        function createHearts() {
-            for(let i=0; i<60; i++) {
+            type();
+            
+            // تأثير انفجار القلوب
+            for(let j=0; j<40; j++) {
                 setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.innerHTML = ['❤️','💖','✨','💕'][Math.floor(Math.random()*4)];
-                    heart.className = 'particle';
-                    heart.style.left = Math.random() * 100 + 'vw';
-                    heart.style.top = '100vh';
-                    heart.style.fontSize = Math.random() * 25 + 15 + 'px';
-                    document.body.appendChild(heart);
-                    setTimeout(() => heart.remove(), 3500);
-                }, i * 80);
+                    let h = document.createElement('div');
+                    h.innerHTML = "❤️"; h.className = "heart-particle";
+                    h.style.left = Math.random()*100+"vw";
+                    h.style.top = "100vh";
+                    h.style.fontSize = (Math.random()*20 + 15) + "px";
+                    document.body.appendChild(h);
+                    setTimeout(() => h.remove(), 3500);
+                }, j * 50);
             }
         }
     </script>
