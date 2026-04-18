@@ -3,59 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الخزنة السرية ❤️</title>
+    <title>الخزنة السرية | Phantom Edition 💎</title>
     <style>
-        :root { --primary: #ff4d6d; --glass: rgba(255, 255, 255, 0.2); }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: sans-serif; overflow: hidden; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, #ffb3c1, #ff4d6d); }
-        
-        #lock-screen { text-align: center; z-index: 10; }
-        .heart-svg { width: 130px; cursor: pointer; filter: drop-shadow(0 0 10px white); animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-        
-        #password-box { display: none; background: var(--glass); backdrop-filter: blur(15px); padding: 30px; border-radius: 25px; border: 1px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 280px; }
-        input { padding: 12px; border-radius: 12px; border: none; width: 90%; text-align: center; font-size: 20px; margin-bottom: 15px; outline: none; color: #c9184a; font-weight: bold; }
-        button { background: #c9184a; color: white; border: none; padding: 12px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; font-size: 16px; transition: 0.3s; }
-        button:hover { background: #ff4d6d; }
+        :root {
+            --primary: #ff1f5a; /* لون أحمر نيون فخم */
+            --glass: rgba(255, 255, 255, 0.08); /* زجاج شبحي شفاف جداً */
+            --border: rgba(255, 255, 255, 0.15);
+        }
 
-        #secret-content { display: none; text-align: center; color: white; animation: zoomIn 1s cubic-bezier(0.17, 0.89, 0.32, 1.49); }
-        .user-img { width: 220px; height: 220px; border-radius: 50%; border: 6px solid white; object-fit: cover; margin-bottom: 25px; box-shadow: 0 0 30px rgba(255,255,255,0.5); animation: float 3s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            /* خلفية متدرجة متحركة فخمة */
+            background: linear-gradient(-45deg, #2b0b1a, #5c1126, #8e2a3e, #2b0b1a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* جزيئات خلفية مضيئة */
+        #bg-particles {
+            position: absolute; width: 100%; height: 100%;
+            top: 0; left: 0; z-index: 1; pointer-events: none;
+        }
+
+        .bg-particle {
+            position: absolute; background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%; animation: orbit infinite linear;
+        }
+
+        @keyframes orbit {
+            from { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            to { transform: translateY(-10vh) translateX(50px); opacity: 0; }
+        }
+
+        /* حاوية المحتوى الرئيسية */
+        .container {
+            z-index: 10; position: relative; text-align: center;
+        }
+
+        /* شاشة القفل */
+        #lock-screen {
+            animation: fadeIn 1s;
+        }
+
+        /* زر القلب النيون */
+        .heart-btn-container {
+            position: relative; width: 150px; height: 150px;
+            margin: 0 auto 30px auto; cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .heart-btn-container:hover { transform: scale(1.1); }
+
+        .heart-svg {
+            width: 100%; height: 100%;
+            filter: drop-shadow(0 0 20px var(--primary));
+        }
+
+        .heart-path {
+            fill: none;
+            stroke: #fff;
+            stroke-width: 1.5;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawHeart 5s linear infinite, neonGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes drawHeart {
+            0%, 100% { stroke-dashoffset: 1000; opacity: 0; }
+            50% { stroke-dashoffset: 0; opacity: 1; }
+        }
+
+        @keyframes neonGlow {
+            0%, 100% { filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 10px var(--primary)); }
+            50% { filter: drop-shadow(0 0 10px #fff) drop-shadow(0 0 20px var(--primary)); }
+        }
+
+        .tap-text {
+            color: #fff; font-weight: bold; font-size: 18px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            margin-top: -20px; animation: breathe 2s infinite;
+        }
+        @keyframes breathe { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+        /* صندوق الرمز - زجاج فخم */
+        #password-box {
+            display: none;
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            width: 300px;
+            animation: slideUp 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        h2 { color: #fff; margin: 0 0 25px 0; font-size: 24px; text-shadow: 0 0 10px var(--primary); }
+
+        .input-group { position: relative; margin-bottom: 20px; }
+
+        input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 15px;
+            outline: none;
+            text-align: center;
+            font-size: 22px;
+            color: #fff;
+            width: calc(100% - 32px);
+            font-weight: bold;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(255, 31, 90, 0.3); }
+
+        button {
+            background: linear-gradient(135deg, var(--primary), #b0153d);
+            color: #fff;
+            border: none;
+            padding: 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 31, 90, 0.3);
+        }
+        button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255, 31, 90, 0.5); }
+        button:active { transform: translateY(1px); }
+
+        /* شاشة المحتوى السري */
+        #secret-content {
+            display: none;
+            animation: unlockSequence 2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+        }
+
+        @keyframes unlockSequence {
+            0% { transform: scale(0.3) rotate(-15deg); opacity: 0; filter: blur(20px); }
+            50% { transform: scale(1.05) rotate(2deg); opacity: 1; filter: blur(0); }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+
+        .img-frame {
+            position: relative; width: 250px; height: 250px;
+            margin: 0 auto 30px auto;
+        }
         
-        .message { font-size: 24px; font-weight: bold; background: rgba(0,0,0,0.15); padding: 20px; border-radius: 20px; max-width: 85%; margin: 0 auto; line-height: 1.5; }
-        
-        @keyframes zoomIn { from { transform: scale(0) rotate(-10deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
-        .heart-particle { position: absolute; pointer-events: none; animation: fly 3.5s linear forwards; font-size: 20px; }
-        @keyframes fly { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; } }
+        .user-img {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fff;
+            box-shadow: 0 0 40px rgba(255,255,255,0.6), 0 0 70px var(--primary);
+            animation: imageFloat 4s ease-in-out infinite;
+            position: relative; z-index: 2;
+        }
+
+        /* حلقة ضوئية خلف الصورة */
+        .img-glow-ring {
+            position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            animation: ringPulse 2s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes imageFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes ringPulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.1); opacity: 0; } }
+
+        .message-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            max-width: 85%; margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .message-text {
+            color: #fff; font-size: 26px; font-weight: bold; line-height: 1.6;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            margin: 0;
+        }
+
+        /* تأثير انفجار القلوب النيون */
+        .heart-particle {
+            position: absolute; pointer-events: none;
+            z-index: 100;
+            animation: heartFly 3.5s ease-out forwards;
+            color: #fff;
+            text-shadow: 0 0 5px #fff, 0 0 10px var(--primary);
+        }
+
+        @keyframes heartFly {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            20% { opacity: 1; }
+            100% { transform: translate(var(--dx), var(--dy)) scale(var(--scale)) rotate(var(--rot)); opacity: 0; }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <div id="lock-screen">
-        <svg class="heart-svg" viewBox="0 0 32 32" onclick="showInput()">
-            <path fill="white" d="M16 28.5L14.1 26.7C7.2 20.4 2.5 16.2 2.5 11C2.5 6.6 6 3.1 10.4 3.1C12.9 3.1 15.3 4.2 16.9 6.1C18.5 4.2 20.9 3.1 23.4 3.1C27.8 3.1 31.3 6.6 31.3 11C31.3 16.2 26.6 20.4 19.7 26.7L16 28.5Z"/>
-        </svg>
-        <p style="color: white; font-weight: bold; margin-top: 15px; text-shadow: 0 2px 5px rgba(0,0,0,0.2);">اضغط على القلب ❤️</p>
-        
-        <div id="password-box">
-            <input type="text" id="passInput" placeholder="أدخل الرمز السرّي">
-            <button onclick="check()">فتح الخزنة ✨</button>
+    <div id="bg-particles"></div>
+
+    <div class="container">
+        <div id="lock-screen">
+            <div class="heart-btn-container" onclick="showInput()">
+                <svg class="heart-svg" viewBox="0 0 32 32">
+                    <path class="heart-path" d="M16 28.5L14.1 26.7C7.2 20.4 2.5 16.2 2.5 11C2.5 6.6 6 3.1 10.4 3.1C12.9 3.1 15.3 4.2 16.9 6.1C18.5 4.2 20.9 3.1 23.4 3.1C27.8 3.1 31.3 6.6 31.3 11C31.3 16.2 26.6 20.4 19.7 26.7L16 28.5Z"/>
+                </svg>
+            </div>
+            <p class="tap-text">انقر لفتح الخزنة</p>
+            
+            <div id="password-box">
+                <h2>الخزنة السرية ✨</h2>
+                <div class="input-group">
+                    <input type="text" id="passInput" placeholder="أدخل الرمز" maxlength="10">
+                </div>
+                <button onclick="check()">دخول آمن</button>
+            </div>
+        </div>
+
+        <div id="secret-content">
+            <div class="img-frame">
+                <div class="img-glow-ring"></div>
+                <img id="sharedImg" src="" class="user-img">
+            </div>
+            <div class="message-card">
+                <p id="msg" class="message-text"></p>
+            </div>
         </div>
     </div>
 
-    <div id="secret-content">
-        <img id="sharedImg" src="" class="user-img">
-        <div id="msg" class="message"></div>
-    </div>
-
     <script>
-        // الرمز الثابت كما طلبت
+        // الرمز الثابت
         const staticPass = "1X";
         const sheetID = "11vyohqnDbQf7CT3SQ_jVKoIkbjaHw_AY53buW4quQr4";
         
-        // رابط التصدير المباشر (لا يحتاج لنشر على الويب، فقط يحتاج أن يكون الجدول عاماً)
+        // رابط التصدير المباشر
         const exportUrl = `https://docs.google.com/spreadsheets/d/${sheetID}/export?format=csv&gid=0`;
 
         let dataImg = "", dataMsg = "";
+
+        // إنشاء جزيئات الخلفية
+        function createBgParticles() {
+            const container = document.getElementById('bg-particles');
+            for(let i=0; i<50; i++) {
+                const p = document.createElement('div');
+                p.className = 'bg-particle';
+                const size = Math.random()*4+1+'px';
+                p.style.width = size; p.style.height = size;
+                p.style.left = Math.random()*100+'vw';
+                p.style.animationDuration = Math.random()*10+5+'s';
+                p.style.animationDelay = Math.random()*5+'s';
+                container.appendChild(p);
+            }
+        }
+        createBgParticles();
 
         // جلب البيانات فور تحميل الصفحة
         async function fetchSheet() {
@@ -65,22 +288,20 @@
                 const rows = text.split('\n');
                 
                 if (rows.length > 1) {
-                    // سحب البيانات من السطر الثاني وتوزيعها
                     const columns = rows[1].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                     dataImg = columns[1].replace(/"/g, "").trim();
                     dataMsg = columns[2].replace(/"/g, "").trim();
                     console.log("البيانات جاهزة ✅");
                 }
-            } catch (error) {
-                console.error("فشل في جلب البيانات من الجدول.");
-            }
+            } catch (error) { console.error("فشل في جلب البيانات."); }
         }
         fetchSheet();
 
         function showInput() { 
-            document.querySelector('.heart-svg').style.display='none';
-            document.querySelector('p').style.display='none';
+            document.querySelector('.heart-btn-container').style.display='none';
+            document.querySelector('.tap-text').style.display='none';
             document.getElementById('password-box').style.display='block'; 
+            document.getElementById('passInput').focus();
         }
 
         function check() {
@@ -88,6 +309,20 @@
             if(val === staticPass) {
                 unlock();
             } else {
+                // تأثير اهتزاز عند الخطأ
+                const box = document.getElementById('password-box');
+                box.style.animation = 'none';
+                void box.offsetWidth;
+                box.style.animation = 'shake 0.5s';
+                
+                // تعريف حركة الاهتزاز ديناميكياً
+                if(!document.getElementById('shake-style')) {
+                    const style = document.createElement('style');
+                    style.id = 'shake-style';
+                    style.innerHTML = '@keyframes shake { 0%, 100% {transform:translateX(0);} 10%, 30%, 50%, 70%, 90% {transform:translateX(-10px);} 20%, 40%, 60%, 80% {transform:translateX(10px);} }';
+                    document.head.appendChild(style);
+                }
+
                 alert("الرمز خطأ! حاول مجدداً ❤️");
                 document.getElementById('passInput').value = "";
             }
@@ -97,30 +332,40 @@
             document.getElementById('lock-screen').style.display='none';
             document.getElementById('secret-content').style.display='block';
             
-            // وضع الصورة والرسالة من الجدول
+            // وضع الصورة
             document.getElementById('sharedImg').src = dataImg;
             
+            // تأثير كتابة الرسالة (Typewriter)
             let i = 0;
             const targetMsg = dataMsg || "لا توجد رسالة حالياً";
             function type() {
                 if(i < targetMsg.length) {
                     document.getElementById('msg').innerHTML += targetMsg.charAt(i);
-                    i++; setTimeout(type, 80);
+                    i++; setTimeout(type, 70);
                 }
             }
-            type();
+            // تشغيل الكتابة بعد انقضاء أنيميشن الفتح (حوالي 1 ثانية)
+            setTimeout(type, 1000);
             
-            // تأثير انفجار القلوب
-            for(let j=0; j<40; j++) {
+            // تأثير انفجار القلوب النيون المتطور
+            for(let j=0; j<60; j++) {
                 setTimeout(() => {
-                    let h = document.createElement('div');
-                    h.innerHTML = "❤️"; h.className = "heart-particle";
-                    h.style.left = Math.random()*100+"vw";
-                    h.style.top = "100vh";
-                    h.style.fontSize = (Math.random()*20 + 15) + "px";
+                    const h = document.createElement('div');
+                    h.innerHTML = ['❤️','💖','💕','✨'][Math.floor(Math.random()*4)];
+                    h.className = "heart-particle";
+                    
+                    // تحديد اتجاه عشوائي للانفجار (Dx, Dy)
+                    const angle = Math.random() * Math.PI * 2;
+                    const velocity = Math.random() * 300 + 100;
+                    h.style.setProperty('--dx', Math.cos(angle) * velocity + 'px');
+                    h.style.setProperty('--dy', (Math.sin(angle) * velocity - 200) + 'px');
+                    h.style.setProperty('--scale', Math.random() * 1.5 + 0.5);
+                    h.style.setProperty('--rot', Math.random() * 720 + 'deg');
+
+                    h.style.left = "50%"; h.style.top = "50vh";
                     document.body.appendChild(h);
                     setTimeout(() => h.remove(), 3500);
-                }, j * 50);
+                }, j * 40);
             }
         }
     </script>
