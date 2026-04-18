@@ -27,26 +27,19 @@
         }
 
         /* الشاشة الأولى - القفل */
-        #lock-screen {
-            text-align: center;
-            z-index: 10;
-        }
+        #lock-screen { text-align: center; z-index: 10; }
 
         /* حركة القلب الذي يرسم نفسه */
         .heart-svg {
-            width: 150px;
-            cursor: pointer;
+            width: 150px; cursor: pointer;
             filter: drop-shadow(0 0 15px rgba(255,255,255,0.6));
             transition: transform 0.3s;
         }
         .heart-svg:hover { transform: scale(1.1); }
 
         .heart-path {
-            fill: none;
-            stroke: white;
-            stroke-width: 2;
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
+            fill: none; stroke: white; stroke-width: 2;
+            stroke-dasharray: 1000; stroke-dashoffset: 1000;
             animation: drawHeart 4s linear infinite;
         }
 
@@ -57,22 +50,17 @@
 
         /* صندوق الرمز */
         #password-box {
-            display: none;
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            padding: 35px;
-            border-radius: 25px;
-            border: 1px solid rgba(255,255,255,0.3);
+            display: none; background: var(--glass);
+            backdrop-filter: blur(15px); padding: 35px;
+            border-radius: 25px; border: 1px solid rgba(255,255,255,0.3);
             box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-            animation: fadeIn 0.8s ease;
-            width: 280px;
+            animation: fadeIn 0.8s ease; width: 280px;
         }
 
         input {
             background: rgba(255,255,255,0.9); border: none; padding: 15px;
             border-radius: 12px; outline: none; text-align: center;
             font-size: 18px; color: #c9184a; width: 90%;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
         }
 
         button {
@@ -81,13 +69,10 @@
             cursor: pointer; font-weight: bold; transition: 0.3s;
             font-size: 16px; width: 100%;
         }
-        button:hover { background: #ff4d6d; transform: translateY(-2px); }
 
         /* الشاشة الثانية - المحتوى */
         #secret-content {
-            display: none;
-            text-align: center;
-            color: white;
+            display: none; text-align: center; color: white;
             animation: openVault 1.2s cubic-bezier(0.17, 0.89, 0.32, 1.49);
         }
 
@@ -100,8 +85,7 @@
             width: 220px; height: 220px; object-fit: cover;
             border-radius: 50%; border: 6px solid white;
             box-shadow: 0 0 35px rgba(255,255,255,0.5);
-            margin-bottom: 25px;
-            animation: floating 4s ease-in-out infinite;
+            margin-bottom: 25px; animation: floating 4s ease-in-out infinite;
         }
 
         @keyframes floating {
@@ -116,11 +100,9 @@
             background: rgba(0,0,0,0.1); padding: 15px; border-radius: 15px;
         }
 
-        /* تأثيرات القلوب */
         .particle {
             position: absolute; pointer-events: none;
-            animation: fly 3.5s linear forwards;
-            z-index: 100;
+            animation: fly 3.5s linear forwards; z-index: 100;
         }
         @keyframes fly {
             0% { transform: translateY(0) scale(1); opacity: 1; }
@@ -140,7 +122,7 @@
 
         <div id="password-box">
             <h2 style="color: white; margin-bottom: 20px; font-size: 22px;">الرمز السري 🔒</h2>
-            <input type="password" id="passInput" placeholder="اكتب الرمز هنا...">
+            <input type="text" id="passInput" placeholder="اكتب الرمز هنا...">
             <br>
             <button onclick="checkPassword()">دخول بجمال ✨</button>
         </div>
@@ -152,28 +134,27 @@
     </div>
 
     <script>
+        // الرمز الثابت
+        const staticPass = "1X";
+        
+        // رابط الجدول للرسالة والصورة فقط
         const sheetID = "11vyohqnDbQf7CT3SQ_jVKoIkbjaHw_AY53buW4quQr4";
         const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:csv`;
 
-        let correctPass = "";
         let imgUrl = "";
         let secretMsg = "";
 
-        // جلب وتنظيف البيانات
         async function loadData() {
             try {
                 const res = await fetch(csvUrl);
                 const data = await res.text();
                 const rows = data.split('\n');
-                
-                // تنظيف البيانات من علامات الاقتباس والمسافات الزائدة
                 const targetRow = rows[1].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/); 
-                correctPass = targetRow[0].replace(/^"|"$/g, "").trim();
+                
+                // سحب الصورة والرسالة من الجدول (الرمز صار ثابت بالكود)
                 imgUrl = targetRow[1].replace(/^"|"$/g, "").trim();
                 secretMsg = targetRow[2].replace(/^"|"$/g, "").trim();
-                
-                console.log("تم تحميل البيانات بنجاح!");
-            } catch (e) { console.error("فشل التحميل:", e); }
+            } catch (e) { console.error("فشل تحميل بيانات الجدول"); }
         }
 
         loadData();
@@ -186,14 +167,10 @@
 
         function checkPassword() {
             const userInput = document.getElementById('passInput').value.trim();
-            if (!correctPass) {
-                alert("لحظة.. جاري تحميل الرمز ❤️");
-                return;
-            }
-            if (userInput === correctPass) {
+            if (userInput === staticPass) {
                 unlockVault();
             } else {
-                alert("الرمز خطأ يا حلو! حاول مرة ثانية ❤️");
+                alert("الرمز خطأ! تذكر الرمز هو 1X ❤️");
                 document.getElementById('passInput').value = "";
             }
         }
