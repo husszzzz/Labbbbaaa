@@ -2,229 +2,224 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الخزنة السرية | Ultimate Edition 💎</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>Hassany Store Mini App</title>
     <style>
         :root {
-            --primary: #ff1f5a;
-            --glass: rgba(255, 255, 255, 0.08);
-            --border: rgba(255, 255, 255, 0.15);
+            --bg-color: var(--tg-theme-bg-color, #f0f0f5);
+            --text-color: var(--tg-theme-text-color, #000000);
+            --hint-color: var(--tg-theme-hint-color, #8e8e93);
+            --button-color: var(--tg-theme-button-color, #007aff);
+            --button-text: var(--tg-theme-button-text-color, #ffffff);
+            --secondary-bg: var(--tg-theme-secondary-bg-color, #ffffff);
         }
 
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            font-family: 'Segoe UI', Tahoma, sans-serif; overflow: hidden;
-            display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(-45deg, #1a050d, #3d0b1a, #5c1126, #1a050d);
-            background-size: 400% 400%; animation: gradientBG 15s ease infinite;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            overflow-x: hidden;
         }
 
-        @keyframes gradientBG { 0% {background-position:0% 50%} 50% {background-position:100% 50%} 100% {background-position:0% 50%} }
-
-        /* --- تأثير الشعاع الأبيض الموعوج --- */
-        .light-beam {
-            position: fixed; top: 0; left: -150%; width: 300%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-            transform: skewX(-45deg); z-index: 100; pointer-events: none; display: none;
-        }
-        @keyframes beamMove {
-            0% { left: -150%; opacity: 0; }
-            50% { opacity: 1; }
-            100% { left: 150%; opacity: 0; }
-        }
-
-        /* --- تأثير القلب الأبيض المركزي --- */
-        .central-heart-overlay {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 250px; height: 250px; z-index: 101; pointer-events: none; display: none;
-        }
-        .draw-heart-path {
-            fill: none; stroke: #fff; stroke-width: 1.5;
-            stroke-dasharray: 1000; stroke-dashoffset: 1000;
-            filter: drop-shadow(0 0 20px #fff);
-        }
-        @keyframes drawFadeHeart {
-            0% { stroke-dashoffset: 1000; opacity: 0; transform: scale(0.8); }
-            50% { stroke-dashoffset: 0; opacity: 1; transform: scale(1.1); }
-            100% { stroke-dashoffset: 0; opacity: 0; transform: scale(1.5); }
+        /* Header iOS Style */
+        header {
+            padding: 20px;
+            text-align: center;
+            background: var(--secondary-bg);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
-        .container { z-index: 10; text-align: center; }
-        
-        /* شاشة القفل */
-        #lock-screen { animation: fadeIn 1s; }
-        .heart-btn { cursor: pointer; transition: 0.4s; }
-        .heart-btn:hover { transform: scale(1.15); filter: drop-shadow(0 0 25px var(--primary)); }
-
-        #password-box {
-            display: none; background: var(--glass); backdrop-filter: blur(25px);
-            padding: 40px; border-radius: 30px; border: 1px solid var(--border);
-            width: 300px; box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-            animation: slideUp 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-        }
-        @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-        input {
-            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-            padding: 15px; border-radius: 15px; width: calc(100% - 32px);
-            color: #fff; text-align: center; font-size: 22px; margin-bottom: 20px; outline: none;
-        }
-        button {
-            background: linear-gradient(135deg, var(--primary), #8e1032);
-            color: #fff; border: none; padding: 15px; border-radius: 15px;
-            width: 100%; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 18px;
-        }
-        button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px var(--primary); }
-
-        /* شاشة المحتوى */
-        #secret-content { display: none; text-align: center; color: white; opacity: 0; }
-        .user-img {
-            width: 240px; height: 240px; border-radius: 50%; border: 5px solid #fff;
-            object-fit: cover; box-shadow: 0 0 40px var(--primary), 0 0 20px #fff;
-            animation: float 4s infinite ease-in-out;
-        }
-        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-20px) rotate(2deg); } }
-        
-        .message-card {
-            background: var(--glass); backdrop-filter: blur(20px);
-            padding: 25px; border-radius: 20px; border: 1px solid var(--border);
-            margin-top: 30px; max-width: 320px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        header h1 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
-        /* قلوب الانفجار */
-        .heart-particle {
-            position: absolute; pointer-events: none; z-index: 100;
-            animation: fly 3.5s ease-out forwards;
-            text-shadow: 0 0 10px var(--primary);
-        }
-        @keyframes fly {
-            0% { transform: translate(0,0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--dx), var(--dy)) rotate(360deg) scale(0); opacity: 0; }
+        header p {
+            margin: 5px 0 0;
+            color: var(--hint-color);
+            font-size: 14px;
         }
 
-        @keyframes fadeInContent { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* Container */
+        .container {
+            padding: 15px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 5px 10px;
+            color: var(--text-color);
+        }
+
+        /* Grid System */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* Card iOS Style */
+        .card {
+            background: var(--secondary-bg);
+            border-radius: 18px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.2s active;
+        }
+
+        .card:active {
+            transform: scale(0.96);
+        }
+
+        .card img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+        }
+
+        .card h3 {
+            margin: 5px 0;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .card span {
+            display: block;
+            color: var(--button-color);
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            background-color: var(--button-color);
+            color: var(--button-text);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        /* Bottom Info */
+        footer {
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--hint-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .user-info img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
     </style>
 </head>
 <body>
 
-    <div id="lightBeam" class="light-beam"></div>
-    <div id="centralHeart" class="central-heart-overlay">
-        <svg viewBox="0 0 32 32">
-            <path class="draw-heart-path" d="M16 28.5L14.1 26.7C7.2 20.4 2.5 16.2 2.5 11C2.5 6.6 6 3.1 10.4 3.1C12.9 3.1 15.3 4.2 16.9 6.1C18.5 4.2 20.9 3.1 23.4 3.1C27.8 3.1 31.3 6.6 31.3 11C31.3 16.2 26.6 20.4 19.7 26.7L16 28.5Z"/>
-        </svg>
-    </div>
+<header>
+    <h1>متجر الحسني 💎</h1>
+    <p>Hassany Store - عالم التعديل</p>
+</header>
 
-    <div class="container">
-        <div id="lock-screen">
-            <div class="heart-btn" onclick="showInput()">
-                <svg width="150" viewBox="0 0 32 32">
-                    <path fill="#ff1f5a" filter="drop-shadow(0 0 10px #ff1f5a)" d="M16 28.5L14.1 26.7C7.2 20.4 2.5 16.2 2.5 11C2.5 6.6 6 3.1 10.4 3.1C12.9 3.1 15.3 4.2 16.9 6.1C18.5 4.2 20.9 3.1 23.4 3.1C27.8 3.1 31.3 6.6 31.3 11C31.3 16.2 26.6 20.4 19.7 26.7L16 28.5Z"/>
-                </svg>
-            </div>
-            <p style="color:white; font-weight:bold; margin-top:10px;">انقر للفتح ❤️</p>
-            <div id="password-box">
-                <h2 style="color: #fff; margin-bottom: 25px;">الخزنة السرية</h2>
-                <input type="text" id="passInput" placeholder="أدخل الرمز">
-                <button onclick="check()">دخول آمن ✨</button>
-            </div>
+<div class="container">
+    <div id="user-chip" class="user-info"></div>
+
+    <div class="section-title">خدمات iOS وتطبيقات 📱</div>
+    <div class="grid">
+        <div class="card" onclick="buyService('اشتراك تطبيقات IPA')">
+            <img src="https://cdn-icons-png.flaticon.com/512/831/831329.png" alt="IPA">
+            <h3>اشتراك IPA</h3>
+            <span>5,000 د.ع</span>
+            <button class="btn">طلب الآن</button>
         </div>
-
-        <div id="secret-content">
-            <img id="sharedImg" src="" class="user-img">
-            <div class="message-card">
-                <p id="msg" style="font-size: 26px; font-weight: bold; margin: 0; line-height: 1.4;"></p>
-            </div>
+        <div class="card" onclick="buyService('شهادة ابل سنوية')">
+            <img src="https://cdn-icons-png.flaticon.com/512/732/732190.png" alt="Cert">
+            <h3>شهادة ابل</h3>
+            <span>15,000 د.ع</span>
+            <button class="btn">طلب الآن</button>
         </div>
     </div>
 
-    <script>
-        const staticPass = "1X";
-        const sheetID = "11vyohqnDbQf7CT3SQ_jVKoIkbjaHw_AY53buW4quQr4";
-        const exportUrl = `https://docs.google.com/spreadsheets/d/${sheetID}/export?format=csv&gid=0`;
+    <div class="section-title">شحن ألعاب 🎮</div>
+    <div class="grid">
+        <div class="card" onclick="buyService('شحن شدات ببجي')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3211/3211181.png" alt="PUBG">
+            <h3>شدات ببجي</h3>
+            <span>حسب الكمية</span>
+            <button class="btn">شحن</button>
+        </div>
+        <div class="card" onclick="buyService('شحن كلاش رويال')">
+            <img src="https://cdn-icons-png.flaticon.com/512/1012/1012702.png" alt="Clash">
+            <h3>كلاش رويال</h3>
+            <span>عروض خاصة</span>
+            <button class="btn">شحن</button>
+        </div>
+    </div>
+</div>
 
-        let dataImg = "", dataMsg = "";
+<footer>
+    تم التطوير بواسطة Hassany | 2024<br>
+    جميع الحقوق محفوظة @hassanyIPA
+</footer>
 
-        async function fetchSheet() {
-            try {
-                const r = await fetch(exportUrl);
-                const t = await r.text();
-                const rows = t.split('\n');
-                if (rows.length > 1) {
-                    const cols = rows[1].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                    dataImg = cols[1].replace(/"/g, "").trim();
-                    dataMsg = cols[2].replace(/"/g, "").trim();
-                }
-            } catch (e) { console.log("Error loading sheet"); }
-        }
-        fetchSheet();
+<script>
+    // تهيئة تطبيق تليجرام
+    const tg = window.Telegram.WebApp;
+    tg.expand(); // جعل التطبيق يملأ الشاشة
 
-        function showInput() {
-            document.querySelector('.heart-btn').style.display='none';
-            document.querySelector('p').style.display='none';
-            document.getElementById('password-box').style.display='block';
-        }
+    // إظهار اسم المستخدم
+    const userChip = document.getElementById('user-chip');
+    if (tg.initDataUnsafe.user) {
+        userChip.innerHTML = `
+            <span>أهلاً بك، <b>${tg.initDataUnsafe.user.first_name}</b></span>
+        `;
+    }
 
-        function check() {
-            if(document.getElementById('passInput').value.trim() === staticPass) {
-                runCinematic();
-            } else { alert("الرمز خطأ! حاول مجدداً ❤️"); }
-        }
-
-        function runCinematic() {
-            document.getElementById('lock-screen').style.display = 'none';
-
-            // 1. الشعاع الضوئي
-            const beam = document.getElementById('lightBeam');
-            beam.style.display = 'block';
-            beam.style.animation = 'beamMove 1.2s ease-in-out forwards';
-
-            // 2. القلب الأبيض المركزي
-            setTimeout(() => {
-                const centralHeart = document.getElementById('centralHeart');
-                centralHeart.style.display = 'block';
-                centralHeart.querySelector('path').style.animation = 'drawFadeHeart 1.5s ease-out forwards';
-                
-                // 3. إظهار المحتوى وانفجار القلوب
-                setTimeout(() => {
-                    document.getElementById('secret-content').style.display = 'block';
-                    document.getElementById('secret-content').style.animation = 'fadeInContent 1s forwards';
-                    document.getElementById('sharedImg').src = dataImg;
-                    
-                    typeWriter();
-                    createBurst();
-                }, 1400);
-            }, 800);
-        }
-
-        function typeWriter() {
-            let i = 0;
-            const target = document.getElementById('msg');
-            function type() {
-                if(i < dataMsg.length) {
-                    target.innerHTML += dataMsg.charAt(i);
-                    i++; setTimeout(type, 70);
-                }
+    // وظيفة الطلب
+    function buyService(serviceName) {
+        tg.showConfirm(`هل تريد طلب خدمة: ${serviceName}؟`, (confirmed) => {
+            if (confirmed) {
+                // إرسال البيانات للبوت
+                tg.sendData(JSON.stringify({
+                    service: serviceName,
+                    user: tg.initDataUnsafe.user.username || "بدون يوزر"
+                }));
+                tg.close(); // إغلاق التطبيق بعد الطلب
             }
-            type();
-        }
+        });
+    }
 
-        function createBurst() {
-            for(let i=0; i<50; i++) {
-                setTimeout(() => {
-                    const h = document.createElement('div');
-                    h.innerHTML = ['❤️','💖','✨','💕'][Math.floor(Math.random()*4)];
-                    h.className = "heart-particle";
-                    const angle = Math.random() * Math.PI * 2;
-                    const dist = Math.random() * 400 + 100;
-                    h.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
-                    h.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
-                    h.style.left = "50%"; h.style.top = "50vh";
-                    document.body.appendChild(h);
-                    setTimeout(() => h.remove(), 3500);
-                }, i * 30);
-            }
-        }
-    </script>
+    // ضبط ألوان الثيم
+    tg.onEvent('themeChanged', function() {
+        document.documentElement.style.setProperty('--bg-color', tg.themeParams.bg_color);
+        document.documentElement.style.setProperty('--text-color', tg.themeParams.text_color);
+    });
+</script>
+
 </body>
 </html>
