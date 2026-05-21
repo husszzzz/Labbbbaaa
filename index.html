@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HASSANY · PRO LEAGUE HUB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@300;400;600;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #FFD700;
+    --gold2: #FFA500;
+    --crimson: #C0392B;
+    --electric: #00F5FF;
+    --deep: #020408;
+    --panel: rgba(255,255,255,0.03);
+    --border: rgba(255,215,0,0.15);
+    --text: #E8E8E8;
+    --muted: #666;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--deep);
+    color: var(--text);
+    font-family: 'Cairo', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom Cursor */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform .1s, width .2s, height .2s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: transform .08s ease, opacity .3s;
+    opacity: 0.6;
+  }
+
+  /* Background */
+  .bg-canvas {
+    position: fixed; inset: 0; z-index: 0;
+    background: 
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(192,57,43,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 90%, rgba(0,245,255,0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 100% 100% at 50% 50%, rgba(255,215,0,0.02) 0%, transparent 70%),
+      #020408;
+  }
+
+  .stars {
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 70%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 60% 15%, rgba(255,215,0,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 50%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 80%, rgba(0,245,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 30%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 60%, rgba(255,215,0,0.25) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 70% 75%, rgba(255,255,255,0.3) 0%, transparent 100%);
+    background-size: 600px 600px, 800px 800px, 500px 500px, 700px 700px, 900px 900px, 400px 400px, 650px 650px, 750px 750px;
+    animation: starDrift 80s linear infinite;
+  }
+
+  @keyframes starDrift {
+    from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
+    to { background-position: 600px 600px, -800px 800px, 500px -500px, -700px 700px, 900px -900px, -400px 400px, 650px -650px, -750px 750px; }
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 4vw;
+    height: 70px;
+    background: rgba(2,4,8,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .nav-logo span {
+    -webkit-text-fill-color: var(--text);
+    opacity: 0.5;
+    font-size: 0.9rem;
+    letter-spacing: 6px;
+    display: block;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 300;
+    margin-top: -6px;
+  }
+
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: color .3s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0; right: 0;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform .3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .nav-time {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--electric);
+    letter-spacing: 3px;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative; z-index: 2;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 70px 2rem 0;
+    overflow: hidden;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--border);
+    padding: 6px 20px;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    animation: fadeUp 1s ease both;
+    background: rgba(255,215,0,0.04);
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%,100% { opacity:1; transform: scale(1); }
+    50% { opacity:0.4; transform: scale(0.8); }
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 12vw, 10rem);
+    line-height: 0.9;
+    letter-spacing: 8px;
+    animation: fadeUp 1s .15s ease both;
+    position: relative;
+  }
+
+  .hero-title .line1 {
+    display: block;
+    background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.6) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-title .line2 {
+    display: block;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 50%, var(--crimson) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 40px rgba(255,215,0,0.3));
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem;
+    letter-spacing: 5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 1.5rem;
+    animation: fadeUp 1s .3s ease both;
+  }
+
+  .hero-orb {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,215,0,0.06) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    animation: orbPulse 6s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes orbPulse {
+    0%,100% { transform: translate(-50%,-50%) scale(1); opacity:0.5; }
+    50% { transform: translate(-50%,-50%) scale(1.1); opacity:1; }
+  }
+
+  .hero-ring {
+    position: absolute;
+    border: 1px solid rgba(255,215,0,0.06);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    animation: ringRotate 20s linear infinite;
+    pointer-events: none;
+  }
+
+  .hero-ring:nth-child(1) { width: 500px; height: 500px; margin: -250px 0 0 -250px; }
+  .hero-ring:nth-child(2) { width: 700px; height: 700px; margin: -350px 0 0 -350px; animation-duration: 30s; animation-direction: reverse; border-color: rgba(0,245,255,0.04); }
+  .hero-ring:nth-child(3) { width: 900px; height: 900px; margin: -450px 0 0 -450px; animation-duration: 40s; border-color: rgba(255,215,0,0.03); }
+
+  @keyframes ringRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .scroll-hint {
+    position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: var(--muted); font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase;
+    animation: fadeUp 1s .6s ease both;
+  }
+
+  .scroll-hint::after {
+    content: '';
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollLine 1.5s ease-in-out infinite;
+  }
+
+  @keyframes scrollLine {
+    0%,100% { opacity: 0; transform: scaleY(0) translateY(-20px); }
+    50% { opacity: 1; transform: scaleY(1) translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(30px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    position: relative; z-index: 2;
+    background: linear-gradient(90deg, var(--crimson), #8B0000);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+    height: 40px;
+    display: flex; align-items: center;
+  }
+
+  .ticker-label {
+    background: #8B0000;
+    padding: 0 20px;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    font-weight: 700;
+    white-space: nowrap;
+    border-right: 1px solid rgba(255,255,255,0.2);
+    height: 100%;
+    display: flex; align-items: center;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .ticker-content {
+    display: flex;
+    animation: tickerScroll 25s linear infinite;
+    white-space: nowrap;
+  }
+
+  .ticker-content span {
+    padding: 0 3rem;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    opacity: 0.9;
+  }
+
+  .ticker-content span::before {
+    content: '⚽';
+    margin-left: 1rem;
+    font-size: 0.65rem;
+  }
+
+  @keyframes tickerScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    position: relative; z-index: 2;
+    padding: 80px 4vw;
+  }
+
+  .section-header {
+    margin-bottom: 3rem;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+  }
+
+  .section-tag {
+    font-size: 0.65rem;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 5vw, 4rem);
+    letter-spacing: 5px;
+    background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.5) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+  }
+
+  .section-count {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 5rem;
+    font-weight: 700;
+    color: rgba(255,215,0,0.06);
+    letter-spacing: -4px;
+    line-height: 1;
+  }
+
+  /* ── TABLES ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .data-table thead tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .data-table th {
+    padding: 12px 16px;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .data-table th:last-child { text-align: left; }
+
+  .data-table tbody tr {
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    transition: background .2s;
+  }
+
+  .data-table tbody tr:hover {
+    background: rgba(255,215,0,0.03);
+  }
+
+  .data-table td {
+    padding: 14px 16px;
+    font-size: 0.85rem;
+    text-align: right;
+  }
+
+  .rank-num {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--muted);
+    min-width: 40px;
+  }
+
+  .rank-num.top { color: var(--gold); }
+
+  .team-name, .player-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #fff;
+  }
+
+  .stat-box {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--electric);
+  }
+
+  .pts-box {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Podium for top 3 */
+  .data-table tbody tr:nth-child(1) { background: rgba(255,215,0,0.04); }
+  .data-table tbody tr:nth-child(2) { background: rgba(192,192,192,0.02); }
+  .data-table tbody tr:nth-child(3) { background: rgba(205,127,50,0.02); }
+
+  .badge-crown { font-size: 0.9rem; }
+
+  /* ── CARDS GRID ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .3s, transform .3s;
+    cursor: pointer;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: scaleX(0);
+    transition: transform .4s;
+  }
+
+  .card:hover {
+    border-color: rgba(255,215,0,0.4);
+    transform: translateY(-4px);
+  }
+
+  .card:hover::before { transform: scaleX(1); }
+
+  .card-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    color: rgba(255,215,0,0.05);
+    line-height: 1;
+    position: absolute; top: 1rem; left: 1.5rem;
+    pointer-events: none;
+  }
+
+  .card-tag {
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-player {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    color: #fff;
+    margin-bottom: 0.25rem;
+  }
+
+  .card-detail {
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  .card-score {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    margin-top: 1rem;
+  }
+
+  /* ── MATCHES ── */
+  .matches-list { display: flex; flex-direction: column; gap: 1rem; }
+
+  .match-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    transition: border-color .3s, background .3s;
+  }
+
+  .match-row:hover {
+    border-color: rgba(255,215,0,0.3);
+    background: rgba(255,215,0,0.03);
+  }
+
+  .match-team { font-weight: 700; font-size: 1rem; }
+  .match-team.home { text-align: right; }
+  .match-team.away { text-align: left; }
+
+  .match-score {
+    text-align: center;
+    font-family: 'Rajdhani', sans-serif;
+  }
+
+  .score-num {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 4px;
+  }
+
+  .score-sep {
+    color: var(--muted);
+    font-size: 0.8rem;
+    display: block;
+    letter-spacing: 2px;
+    margin-top: 2px;
+  }
+
+  /* ── LOADING ── */
+  .loading-state {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 4rem;
+    color: var(--muted);
+    gap: 1rem;
+  }
+
+  .loading-ring {
+    width: 40px; height: 40px;
+    border: 2px solid rgba(255,215,0,0.1);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text {
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    animation: blink 1.5s ease-in-out infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:0.3} 50%{opacity:1} }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index: 2;
+    padding: 3rem 4vw;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(2,4,8,0.8);
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 6px;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .footer-copy {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* Error state */
+  .error-state {
+    padding: 2rem;
+    border: 1px solid rgba(192,57,43,0.3);
+    background: rgba(192,57,43,0.05);
+    border-radius: 2px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+
+  /* Divider line decoration */
+  .line-deco {
+    display: flex; align-items: center; gap: 1rem;
+    margin: 5rem 0;
+  }
+
+  .line-deco::before, .line-deco::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+  }
+
+  .line-deco span {
+    font-size: 0.6rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: rgba(255,215,0,0.2);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-time { font-size: 1rem; }
+    .section-header { flex-direction: column; align-items: flex-start; gap: .5rem; }
+    .section-count { display: none; }
+    .cards-grid { grid-template-columns: 1fr 1fr; }
+    .match-row { padding: 1rem; }
+    .match-team { font-size: 0.85rem; }
+  }
+
+  @media (max-width: 480px) {
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="bg-canvas"></div>
+<div class="stars"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    HASSANY
+    <span>PRO LEAGUE HUB</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#standings">الترتيب</a></li>
+    <li><a href="#matches">المباريات</a></li>
+    <li><a href="#awards">الجوائز</a></li>
+    <li><a href="#scorers">الهدافون</a></li>
+  </ul>
+  <div class="nav-time" id="liveClock">--:--:--</div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-orb"></div>
+
+  <div class="hero-badge">● البث المباشر للإحصاءات</div>
+
+  <h1 class="hero-title">
+    <span class="line1">HASSANY</span>
+    <span class="line2">HUB 365</span>
+  </h1>
+  <p class="hero-subtitle">Pro League · Season 2025 / 2026</p>
+
+  <div class="scroll-hint">استكشف</div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-label">⚡ LIVE</div>
+  <div class="ticker-content" id="tickerContent">
+    <span>جاري تحميل الأخبار...</span>
+    <span>جاري تحميل الأخبار...</span>
+    <span>جاري تحميل الأخبار...</span>
+    <span>جاري تحميل الأخبار...</span>
+    <span>جاري تحميل الأخبار...</span>
+    <span>جاري تحميل الأخبار...</span>
+  </div>
+</div>
+
+<!-- STANDINGS -->
+<section id="standings">
+  <div class="section-header">
+    <div>
+      <div class="section-tag">// الموسم الحالي</div>
+      <h2 class="section-title">ترتيب الدوري</h2>
+    </div>
+    <div class="section-count">01</div>
+  </div>
+  <div id="standingsContainer">
+    <div class="loading-state">
+      <div class="loading-ring"></div>
+      <div class="loading-text">جاري تحميل البيانات</div>
+    </div>
+  </div>
+</section>
+
+<div class="line-deco"><span>✦</span></div>
+
+<!-- MATCHES -->
+<section id="matches">
+  <div class="section-header">
+    <div>
+      <div class="section-tag">// جدول المباريات</div>
+      <h2 class="section-title">المباريات</h2>
+    </div>
+    <div class="section-count">02</div>
+  </div>
+  <div id="matchesContainer">
+    <div class="loading-state">
+      <div class="loading-ring"></div>
+      <div class="loading-text">جاري تحميل البيانات</div>
+    </div>
+  </div>
+</section>
+
+<div class="line-deco"><span>✦</span></div>
+
+<!-- AWARDS -->
+<section id="awards">
+  <div class="section-header">
+    <div>
+      <div class="section-tag">// مرشحو البالون دور</div>
+      <h2 class="section-title">الجوائز</h2>
+    </div>
+    <div class="section-count">03</div>
+  </div>
+  <div id="awardsContainer">
+    <div class="loading-state">
+      <div class="loading-ring"></div>
+      <div class="loading-text">جاري تحميل البيانات</div>
+    </div>
+  </div>
+</section>
+
+<div class="line-deco"><span>✦</span></div>
+
+<!-- SCORERS -->
+<section id="scorers">
+  <div class="section-header">
+    <div>
+      <div class="section-tag">// صراع الهدافين</div>
+      <h2 class="section-title">الهدافون</h2>
+    </div>
+    <div class="section-count">04</div>
+  </div>
+  <div id="scorersContainer">
+    <div class="loading-state">
+      <div class="loading-ring"></div>
+      <div class="loading-text">جاري تحميل البيانات</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">HASSANY HUB</div>
+  <div class="footer-copy">PRO LEAGUE · 2025/2026<br>مدعوم بـ Google Sheets</div>
+  <div class="footer-logo" style="opacity:0.2">365</div>
+</footer>
+
+<script>
+// ── Cursor ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+  ring.style.left = e.clientX + 'px';
+  ring.style.top = e.clientY + 'px';
+});
+
+// ── Clock ──
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const s = String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('liveClock').textContent = `${h}:${m}:${s}`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ── Google Sheets Config ──
+// ضع معرف ملف Google Sheets هنا
+const SHEET_ID = 'YOUR_GOOGLE_SHEET_ID';
+const API_KEY = 'YOUR_GOOGLE_API_KEY';
+
+// أسماء الشيتات - عدّلها حسب ملفك
+const SHEETS = {
+  standings: 'الترتيب',      // اسم شيت الترتيب
+  matches:   'المباريات',     // اسم شيت المباريات
+  awards:    'البالون دور',   // اسم شيت الجوائز
+  scorers:   'الهدافون',      // اسم شيت الهدافين
+  news:      'الأخبار',       // اسم شيت الأخبار
+};
+
+async function fetchSheet(sheetName) {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(sheetName)}?key=${API_KEY}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    return data.values || [];
+  } catch (e) {
+    console.error(`Error fetching ${sheetName}:`, e);
+    return null;
+  }
+}
+
+// ── Render Standings ──
+function renderStandings(rows) {
+  if (!rows || rows.length < 2) {
+    document.getElementById('standingsContainer').innerHTML =
+      '<div class="error-state">لا توجد بيانات متاحة حالياً</div>';
+    return;
+  }
+  const headers = rows[0];
+  const data = rows.slice(1);
+  const crowns = ['👑','🥈','🥉'];
+
+  let html = `<table class="data-table">
+    <thead><tr>
+      <th>#</th>
+      <th>الفريق</th>`;
+
+  // dynamic headers
+  for (let i = 2; i < headers.length; i++) {
+    html += `<th>${headers[i] || ''}</th>`;
+  }
+  html += `</tr></thead><tbody>`;
+
+  data.forEach((row, i) => {
+    const rank = i + 1;
+    const isTop = rank <= 3;
+    html += `<tr>
+      <td><span class="rank-num ${isTop ? 'top' : ''}">${crowns[i] || rank}</span></td>
+      <td><span class="team-name">${row[0] || '-'}</span></td>`;
+    for (let j = 1; j < headers.length - 1; j++) {
+      const val = row[j] || '-';
+      const isLast = j === headers.length - 2;
+      html += `<td><span class="${isLast ? 'pts-box' : 'stat-box'}">${val}</span></td>`;
+    }
+    html += `</tr>`;
+  });
+
+  html += `</tbody></table>`;
+  document.getElementById('standingsContainer').innerHTML = html;
+}
+
+// ── Render Matches ──
+function renderMatches(rows) {
+  if (!rows || rows.length < 2) {
+    document.getElementById('matchesContainer').innerHTML =
+      '<div class="error-state">لا توجد مباريات مجدولة حالياً</div>';
+    return;
+  }
+
+  const data = rows.slice(1);
+  let html = '<div class="matches-list">';
+
+  data.forEach(row => {
+    const home   = row[0] || '-';
+    const score  = row[1] || 'vs';
+    const away   = row[2] || '-';
+    const date   = row[3] || '';
+    const status = row[4] || '';
+
+    html += `
+    <div class="match-row">
+      <div class="match-team home">${home}</div>
+      <div class="match-score">
+        <div class="score-num">${score}</div>
+        ${date ? `<span class="score-sep">${date}</span>` : ''}
+        ${status ? `<span class="score-sep" style="color:var(--gold);font-size:0.65rem;letter-spacing:2px">${status}</span>` : ''}
+      </div>
+      <div class="match-team away">${away}</div>
+    </div>`;
+  });
+
+  html += '</div>';
+  document.getElementById('matchesContainer').innerHTML = html;
+}
+
+// ── Render Awards ──
+function renderAwards(rows) {
+  if (!rows || rows.length < 2) {
+    document.getElementById('awardsContainer').innerHTML =
+      '<div class="error-state">لا توجد بيانات متاحة حالياً</div>';
+    return;
+  }
+
+  const headers = rows[0];
+  const data = rows.slice(1);
+
+  let html = '<div class="cards-grid">';
+  data.forEach((row, i) => {
+    const name   = row[0] || '-';
+    const detail = row[1] || '';
+    const score  = row[2] || '';
+    html += `
+    <div class="card">
+      <div class="card-number">${String(i+1).padStart(2,'0')}</div>
+      <div class="card-tag">مرشح البالون دور</div>
+      <div class="card-player">${name}</div>
+      <div class="card-detail">${detail}</div>
+      ${score ? `<div class="card-score">${score}</div>` : ''}
+    </div>`;
+  });
+
+  html += '</div>';
+  document.getElementById('awardsContainer').innerHTML = html;
+}
+
+// ── Render Scorers ──
+function renderScorers(rows) {
+  if (!rows || rows.length < 2) {
+    document.getElementById('scorersContainer').innerHTML =
+      '<div class="error-state">لا توجد بيانات متاحة حالياً</div>';
+    return;
+  }
+
+  const headers = rows[0];
+  const data = rows.slice(1);
+  const crowns = ['👑','🥈','🥉'];
+
+  let html = `<table class="data-table">
+    <thead><tr>
+      <th>#</th>
+      <th>اللاعب</th>`;
+  for (let i = 2; i < headers.length; i++) {
+    html += `<th>${headers[i] || ''}</th>`;
+  }
+  html += `</tr></thead><tbody>`;
+
+  data.forEach((row, i) => {
+    const rank = i + 1;
+    const isTop = rank <= 3;
+    html += `<tr>
+      <td><span class="rank-num ${isTop ? 'top' : ''}">${crowns[i] || rank}</span></td>
+      <td><span class="player-name">${row[0] || '-'}</span></td>`;
+    for (let j = 1; j < headers.length - 1; j++) {
+      const val = row[j] || '-';
+      const isLast = j === headers.length - 2;
+      html += `<td><span class="${isLast ? 'pts-box' : 'stat-box'}">${val}</span></td>`;
+    }
+    html += `</tr>`;
+  });
+
+  html += `</tbody></table>`;
+  document.getElementById('scorersContainer').innerHTML = html;
+}
+
+// ── Render News Ticker ──
+function renderTicker(rows) {
+  if (!rows || rows.length < 2) return;
+  const items = rows.slice(1).map(r => r[0]).filter(Boolean);
+  if (!items.length) return;
+
+  const doubled = [...items, ...items];
+  const html = doubled.map(t => `<span>${t}</span>`).join('');
+  document.getElementById('tickerContent').innerHTML = html;
+}
+
+// ── Intersection Observer for animations ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+// ── Init ──
+async function init() {
+  // Only load if SHEET_ID is configured
+  if (SHEET_ID === 'YOUR_GOOGLE_SHEET_ID') {
+    // Demo mode - show placeholder data
+    showDemoData();
+    return;
+  }
+
+  const [standings, matches, awards, scorers, news] = await Promise.all([
+    fetchSheet(SHEETS.standings),
+    fetchSheet(SHEETS.matches),
+    fetchSheet(SHEETS.awards),
+    fetchSheet(SHEETS.scorers),
+    fetchSheet(SHEETS.news),
+  ]);
+
+  renderStandings(standings);
+  renderMatches(matches);
+  renderAwards(awards);
+  renderScorers(scorers);
+  renderTicker(news);
+}
+
+function showDemoData() {
+  // Demo standings
+  renderStandings([
+    ['الفريق','لعب','فاز','تعادل','خسر','الأهداف','النقاط'],
+    ['الهلال',          10,8,1,1,'24-8',25],
+    ['النصر',          10,7,2,1,'22-10',23],
+    ['الاتحاد',         10,6,2,2,'18-12',20],
+    ['الأهلي',          10,5,3,2,'15-10',18],
+    ['الشباب',          10,4,2,4,'14-16',14],
+    ['الاتفاق',         10,3,3,4,'12-15',12],
+    ['الفيصلي',         10,2,3,5,'10-18',9],
+    ['التعاون',         10,1,2,7,'8-22',5],
+  ]);
+
+  // Demo matches
+  renderMatches([
+    ['الفريق المضيف','النتيجة','الفريق الضيف','التاريخ','الحالة'],
+    ['الهلال','3 - 1','النصر','٢٠٢٥/١٢/١٥','منتهي'],
+    ['الاتحاد','2 - 0','الأهلي','٢٠٢٥/١٢/١٦','منتهي'],
+    ['الشباب','vs','الفيصلي','٢٠٢٥/١٢/٢٢','قادم'],
+    ['النصر','vs','الاتحاد','٢٠٢٥/١٢/٢٣','قادم'],
+    ['الأهلي','vs','الهلال','٢٠٢٦/٠١/٠٥','قادم'],
+  ]);
+
+  // Demo awards
+  renderAwards([
+    ['اللاعب','الفريق','الأصوات'],
+    ['محمد صالح','النصر','1240'],
+    ['عمر الشيخ','الهلال','1105'],
+    ['فارس العمري','الاتحاد','980'],
+    ['خالد البكري','الأهلي','870'],
+    ['يوسف الغامدي','الشباب','750'],
+    ['سعد القحطاني','الفيصلي','620'],
+  ]);
+
+  // Demo scorers
+  renderScorers([
+    ['اللاعب','الفريق','المباريات','الأهداف'],
+    ['محمد صالح','النصر',10,14],
+    ['عمر الشيخ','الهلال',10,12],
+    ['فارس العمري','الاتحاد',9,10],
+    ['خالد البكري','الأهلي',10,8],
+    ['يوسف الغامدي','الشباب',9,7],
+    ['سعد القحطاني','الفيصلي',8,6],
+    ['أحمد المطيري','التعاون',10,5],
+  ]);
+
+  // Demo ticker
+  renderTicker([
+    ['الخبر'],
+    ['🏆 الهلال يقود الترتيب برصيد 25 نقطة'],
+    ['⚽ محمد صالح يسجل هاتريك في مباراة البارحة'],
+    ['📅 مباراة النصر والاتحاد الجمعة القادمة'],
+    ['🥇 التصويت لجائزة أفضل لاعب مفتوح حتى نهاية الشهر'],
+    ['💥 5 مباريات مثيرة في الجولة القادمة'],
+  ]);
+}
+
+init();
+</script>
+</body>
+</html>
