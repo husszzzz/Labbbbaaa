@@ -2,46 +2,49 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>متجر الحسني</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Hassany Store - النخبة</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f4f9; padding: 20px; }
-        .app-card { background: white; padding: 15px; margin: 10px 0; border-radius: 10px; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .app-card img { width: 60px; height: 60px; border-radius: 12px; margin-left: 15px; }
-        .btn { background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 20px; }
+        .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
     </style>
 </head>
-<body>
+<body class="bg-slate-900 text-white font-sans transition-colors duration-500" id="body">
 
-    <h1 style="text-align: center;">متجر الحسني</h1>
-    <div id="store">جاري تحميل التطبيقات...</div>
+    <header class="p-6 text-center">
+        <h1 class="text-4xl font-bold mb-2">Hassany Store</h1>
+        <button onclick="changeTheme()" class="bg-blue-600 px-4 py-2 rounded-full">تغيير الألوان</button>
+    </header>
+
+    <section class="max-w-4xl mx-auto p-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass p-6 rounded-2xl transform transition hover:scale-105">
+            <img src="app-icon.png" class="w-16 h-16 mb-4 rounded-xl" alt="App">
+            <h2 class="text-xl font-bold">اسم التطبيق</h2>
+            <p class="text-gray-300 mt-2">وصف احترافي للتطبيق يوضح ميزاته القوية.</p>
+            <button onclick="playSound()" class="mt-4 w-full bg-green-500 py-2 rounded-lg font-bold">تثبيت الآن</button>
+        </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto mt-10 p-6 glass rounded-2xl">
+        <h3 class="text-2xl mb-4">جدول دوري الفرق</h3>
+        <table class="w-full text-center">
+            <thead><tr class="border-b border-gray-700"><th>الفريق</th><th>الحالة</th></tr></thead>
+            <tbody>
+                <tr><td>المجلس الأعلى</td><td>متصدر</td></tr>
+                <tr><td>المتفوقين</td><td>منافس</td></tr>
+                <tr><td>المحارب</td><td>قوي</td></tr>
+                <tr><td>العودة</td><td>صاعد</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <audio id="installSound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
 
     <script>
-        // رابط جدولك بصيغة CSV
-        const sheetUrl = "https://docs.google.com/spreadsheets/d/126ilAR3dYvW4NLzrorvfKTopvanRXfWufBTiqdnFn4s/gviz/tq?tqx=out:csv";
-
-        fetch(sheetUrl)
-            .then(res => res.text())
-            .then(data => {
-                const rows = data.split('\n').slice(1);
-                const container = document.getElementById('store');
-                container.innerHTML = '';
-                
-                rows.forEach(row => {
-                    const cols = row.split('","').map(c => c.replace(/"/g, ''));
-                    if (cols.length >= 4) {
-                        container.innerHTML += `
-                            <div class="app-card">
-                                <img src="${cols[1]}" alt="icon">
-                                <div>
-                                    <h3>${cols[0]}</h3>
-                                    <p>${cols[2]}</p>
-                                </div>
-                                <div style="flex-grow: 1;"></div>
-                                <a href="${cols[3]}" class="btn">تثبيت</a>
-                            </div>`;
-                    }
-                });
-            });
+        function playSound() { document.getElementById('installSound').play(); }
+        function changeTheme() {
+            document.getElementById('body').classList.toggle('bg-slate-900');
+            document.getElementById('body').classList.toggle('bg-indigo-900');
+        }
     </script>
 </body>
 </html>
