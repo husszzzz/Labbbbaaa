@@ -3,353 +3,736 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hassany IPA</title>
+    <title>Hassany IPA | متجر حساني</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
+        /* ==========================================================================
+           1. المتغيرات والألوان (Variables)
+           ========================================================================== */
         :root {
-            --bg-color: #f4f6f9;
+            /* وضع النهار */
+            --bg-color: #f4f7fe;
             --card-bg: #ffffff;
-            --text-color: #1e293b;
-            --text-muted: #64748b;
-            --primary-color: #8b5cf6; /* بنفسجي التحميل */
-            --secondary-color: #3b82f6; /* أزرق التحميل */
-            --border-color: #e2e8f0;
-            --modal-bg: rgba(0, 0, 0, 0.5);
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --primary: #6366f1; /* بنفسجي/أزرق */
+            --primary-hover: #4f46e5;
+            --secondary: #ec4899; /* وردي/أحمر */
+            --border: #e5e7eb;
+            --modal-bg: rgba(0, 0, 0, 0.4);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --fire-glow: rgba(239, 68, 68, 0.4);
         }
 
         .dark-mode {
-            --bg-color: #0b0f19;
-            --card-bg: #151c2c;
-            --text-color: #ffffff;
-            --text-muted: #8a99ad;
-            --border-color: rgba(255, 255, 255, 0.05);
-            --modal-bg: rgba(0, 0, 0, 0.8);
+            /* وضع الليل */
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #818cf8;
+            --primary-hover: #6366f1;
+            --secondary: #f472b6;
+            --border: #334155;
+            --modal-bg: rgba(0, 0, 0, 0.7);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+            --glass-bg: rgba(30, 41, 59, 0.8);
+            --fire-glow: rgba(239, 68, 68, 0.6);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; transition: 0.3s; }
-        body { background-color: var(--bg-color); color: var(--text-color); padding: 20px; max-width: 600px; margin: 0 auto; }
+        /* ==========================================================================
+           2. الإعدادات الأساسية (Base)
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        /* الهيدر */
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .logo { font-size: 24px; font-weight: 800; background: linear-gradient(45deg, var(--secondary-color), var(--primary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .theme-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 8px 15px; border-radius: 50px; cursor: pointer; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
 
-        /* الكروت العلوية (المربعات) */
-        .top-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px; }
-        .stat-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 15px 5px; text-align: center; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; }
-        .stat-card:hover { transform: translateY(-3px); border-color: var(--secondary-color); }
-        .stat-title { font-size: 14px; font-weight: 700; color: #059669; }
-        .stat-value { font-size: 22px; font-weight: 800; color: var(--primary-color); }
-        .stat-title.cert { color: #b45309; }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-        /* البحث والأقسام */
-        .search-input { width: 100%; padding: 15px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; color: var(--text-color); margin-bottom: 15px; outline: none; font-weight: 600; }
-        .categories-container { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: none; }
-        .categories-container::-webkit-scrollbar { display: none; }
-        .cat-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 8px 16px; border-radius: 50px; white-space: nowrap; font-weight: 700; cursor: pointer; }
-        .cat-btn.active { background: var(--secondary-color); color: #fff; border-color: var(--secondary-color); }
+        /* ==========================================================================
+           3. الحركات (Animations)
+           ========================================================================== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        /* كروت التطبيقات */
-        .apps-grid { display: flex; flex-direction: column; gap: 15px; }
-        .app-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        @keyframes firePulse {
+            0% { box-shadow: 0 0 5px var(--fire-glow), inset 0 0 5px var(--fire-glow); }
+            50% { box-shadow: 0 0 20px var(--fire-glow), inset 0 0 10px var(--fire-glow); border-color: #ef4444; }
+            100% { box-shadow: 0 0 5px var(--fire-glow), inset 0 0 5px var(--fire-glow); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        /* ==========================================================================
+           4. الهيدر والشريط العلوي (Header)
+           ========================================================================== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-top: 10px;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 900;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .theme-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        .theme-btn:hover { transform: scale(1.05); }
+
+        /* ==========================================================================
+           5. المربعات الإحصائية (Stats Grid)
+           ========================================================================== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+
+        .stat-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .stat-title { font-size: 13px; font-weight: 700; color: var(--text-muted); }
+        .stat-value { font-size: 22px; font-weight: 900; color: var(--text-main); }
+        .cert-card .stat-title { color: #f59e0b; }
+
+        /* ==========================================================================
+           6. البحث والأقسام (Search & Categories)
+           ========================================================================== */
+        .search-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            color: var(--text-main);
+            font-size: 15px;
+            font-weight: 600;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1); }
+        .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; fill: var(--text-muted); }
+
+        .categories {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
+        }
+        .categories::-webkit-scrollbar { display: none; }
+
+        .cat-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 8px 20px;
+            border-radius: 50px;
+            white-space: nowrap;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .cat-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+        }
+
+        .fav-cat-btn { border-color: var(--secondary); color: var(--secondary); }
+        .fav-cat-btn.active { background: var(--secondary); color: white; border-color: var(--secondary); box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3); }
+
+        /* ==========================================================================
+           7. شبكة التطبيقات والكروت (Apps Grid & Cards)
+           ========================================================================== */
+        .apps-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .app-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 18px;
+            box-shadow: var(--shadow-sm);
+            animation: fadeInUp 0.5s ease backwards;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .app-card:hover { box-shadow: var(--shadow-md); border-color: rgba(99, 102, 241, 0.3); }
+
         .app-header { display: flex; gap: 15px; align-items: center; margin-bottom: 15px; }
-        .app-icon { width: 70px; height: 70px; border-radius: 18px; object-fit: cover; background: #eee; border: 1px solid var(--border-color); }
+        .app-icon { width: 75px; height: 75px; border-radius: 18px; object-fit: cover; background: var(--border); }
+        
         .app-info { flex: 1; }
-        .app-name { font-size: 18px; font-weight: 700; margin-bottom: 5px; }
-        .app-meta { font-size: 12px; color: var(--text-muted); font-weight: 600; }
-
-        /* أزرار التحميل والتفاصيل (نفس الصورة) */
-        .card-actions { display: flex; gap: 10px; }
-        .btn-download { flex: 1; padding: 12px; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); color: white; text-align: center; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 16px; border: none; cursor: pointer; }
-        .btn-details { flex: 1; padding: 12px; background: transparent; color: var(--secondary-color); text-align: center; border-radius: 50px; font-weight: 700; font-size: 16px; border: 2px solid var(--secondary-color); cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 5px; }
-        .btn-details:hover { background: rgba(59, 130, 246, 0.1); }
+        .app-name-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+        .app-name { font-size: 18px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
         
-        .app-description { display: none; margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.03); border-radius: 12px; font-size: 13px; color: var(--text-muted); font-weight: 600; line-height: 1.6; }
-        .dark-mode .app-description { background: rgba(255,255,255,0.05); }
+        .badge {
+            font-size: 10px; padding: 3px 8px; border-radius: 50px; font-weight: 800;
+            background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2);
+        }
 
-        /* النوافذ المنبثقة (Modals) */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-bg); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: var(--bg-color); width: 100%; max-width: 400px; border-radius: 24px; padding: 25px; position: relative; max-height: 90vh; overflow-y: auto; }
-        .close-modal { position: absolute; top: 15px; left: 15px; background: red; color: white; border: none; width: 30px; height: 30px; border-radius: 50%; font-weight: bold; cursor: pointer; }
-        .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 20px; text-align: center; color: var(--text-color); }
+        .fav-btn {
+            background: none; border: none; cursor: pointer; padding: 5px;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .fav-btn:active { transform: scale(0.8); }
+        .fav-btn svg { width: 24px; height: 24px; fill: none; stroke: var(--text-muted); stroke-width: 2; transition: all 0.3s; }
+        .fav-btn.favorited svg { fill: var(--secondary); stroke: var(--secondary); }
+
+        .app-meta {
+            display: flex; gap: 12px; font-size: 13px; color: var(--text-muted); font-weight: 600; align-items: center;
+        }
+        .meta-item { display: flex; align-items: center; gap: 5px; }
+        .meta-icon { width: 14px; height: 14px; fill: currentColor; }
+
+        /* الأزرار داخل الكارت */
+        .card-actions { display: flex; gap: 12px; margin-top: 10px; }
         
-        /* فورم طلب اللعبة */
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px; }
-        .form-control { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color); font-family: inherit; }
-        .btn-submit { width: 100%; padding: 15px; background: #0088cc; color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 16px; cursor: pointer; margin-top: 10px; }
+        .btn-download {
+            flex: 1.5; padding: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white; text-align: center; border-radius: 16px; text-decoration: none;
+            font-weight: 800; font-size: 15px; border: none; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2); transition: all 0.3s;
+        }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4); filter: brightness(1.1); }
 
-        /* باقات الشهادات */
-        .package-card { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 16px; padding: 15px; margin-bottom: 15px; text-align: center; }
+        .btn-details {
+            flex: 1; padding: 12px; background: transparent; color: var(--text-main);
+            text-align: center; border-radius: 16px; font-weight: 700; font-size: 14px;
+            border: 2px solid var(--border); cursor: pointer;
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-details:hover { background: var(--border); }
+        .btn-details svg { width: 12px; height: 12px; fill: currentColor; transition: transform 0.4s ease; }
+        .btn-details.open svg { transform: rotate(180deg); }
+
+        /* وصف التطبيق (حركة النعومة) */
+        .app-description-wrapper {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .app-description {
+            margin-top: 15px; padding: 15px;
+            background: rgba(107, 114, 128, 0.05);
+            border-radius: 16px; border: 1px solid var(--border);
+            font-size: 13.5px; color: var(--text-muted); font-weight: 600; line-height: 1.8;
+        }
+
+        /* ==========================================================================
+           8. النوافذ المنبثقة (Modals & Packages)
+           ========================================================================== */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--modal-bg); z-index: 1000;
+            justify-content: center; align-items: flex-end; /* للظهور من الأسفل */
+            backdrop-filter: blur(5px);
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal.show { opacity: 1; }
+
+        .modal-content {
+            background: var(--bg-color); width: 100%; max-width: 650px;
+            border-radius: 30px 30px 0 0; padding: 30px 20px;
+            position: relative; max-height: 85vh; overflow-y: auto;
+            transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+        .modal.show .modal-content { transform: translateY(0); }
+
+        .close-modal {
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            width: 50px; height: 5px; background: var(--border); border-radius: 10px;
+            border: none; cursor: pointer;
+        }
+
+        .modal-title { font-size: 22px; font-weight: 900; margin-bottom: 25px; text-align: center; }
+
+        /* تصميم باقات الشهادات (الطولية مع النعومة والنار) */
+        .packages-container {
+            display: flex; flex-direction: column; gap: 15px;
+        }
+
+        .package-card {
+            background: var(--card-bg); border: 2px solid var(--border); border-radius: 20px;
+            padding: 20px; text-align: right; cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; gap: 10px;
+            position: relative; overflow: hidden;
+        }
+
+        .package-card:hover { transform: scale(1.02) translateY(-5px); }
+
+        /* الباقة النارية */
         .pkg-fire { border-color: #ef4444; }
-        .pkg-super { border-color: #3b82f6; }
-        .pkg-vip { border-color: #f59e0b; }
-        .pkg-title { font-weight: 800; font-size: 18px; margin-bottom: 5px; }
-        .pkg-price { font-size: 16px; font-weight: 700; color: #10b981; margin-bottom: 10px; }
-        .pkg-features { text-align: right; font-size: 13px; font-weight: 600; color: var(--text-muted); line-height: 1.8; list-style: none; }
+        .pkg-fire:hover { animation: firePulse 2s infinite; }
         
-        .loading { text-align: center; padding: 40px; font-weight: 800; color: var(--secondary-color); }
+        /* الباقة السوبر */
+        .pkg-super { border-color: #3b82f6; }
+        .pkg-super:hover { box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
+
+        /* الباقة VIP */
+        .pkg-vip { border-color: #f59e0b; }
+        .pkg-vip:hover { box-shadow: 0 0 20px rgba(245, 158, 11, 0.4); }
+
+        .pkg-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .pkg-title { font-weight: 900; font-size: 18px; color: var(--text-main); }
+        .pkg-price { font-size: 18px; font-weight: 900; color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 5px 12px; border-radius: 10px; }
+        
+        .pkg-features { list-style: none; margin-top: 10px; }
+        .pkg-features li { font-size: 14px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .pkg-features li::before { content: '✓'; color: #10b981; font-weight: bold; }
+
+        /* فورم الطلب */
+        .form-group { margin-bottom: 15px; }
+        .form-control { width: 100%; padding: 15px; border-radius: 16px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-main); font-weight: 600; outline: none; transition: 0.3s; }
+        .form-control:focus { border-color: var(--primary); }
+        
+        .btn-submit {
+            width: 100%; padding: 16px; background: var(--primary); color: white; border: none;
+            border-radius: 16px; font-weight: 900; font-size: 16px; cursor: pointer; margin-top: 10px;
+            transition: all 0.3s;
+        }
+        .btn-submit:hover { filter: brightness(1.1); transform: translateY(-2px); }
+
+        /* ==========================================================================
+           9. اللودينج والإشعارات (Loading & Toasts)
+           ========================================================================== */
+        .skeleton-card {
+            height: 180px; background: linear-gradient(to right, var(--card-bg) 8%, var(--border) 18%, var(--card-bg) 33%);
+            background-size: 1000px 100%; animation: shimmer 2s infinite linear;
+            border-radius: 24px; border: 1px solid var(--border);
+        }
+
+        .toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--text-main); color: var(--bg-color); padding: 12px 24px;
+            border-radius: 50px; font-weight: 700; font-size: 14px; opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 9999;
+            box-shadow: var(--shadow-lg);
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
     </style>
 </head>
-<body class="light-mode">
+<body>
 
-    <header>
-        <div class="logo">HASSANY IPA</div>
-        <button class="theme-btn" onclick="toggleTheme()">🌙 ليلي</button>
-    </header>
+    <div class="container">
+        <header>
+            <div class="logo">Hassany IPA</div>
+            <button class="theme-btn" onclick="toggleTheme()">
+                <svg id="theme-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <span id="theme-text">ليلي</span>
+            </button>
+        </header>
 
-    <div class="top-stats-grid">
-        <div class="stat-card" onclick="openModal('certModal')">
-            <span class="stat-title cert">شراء</span>
-            <span class="stat-title cert">شهادة</span>
-        </div>
-        <div class="stat-card" onclick="openModal('requestModal')">
-            <span class="stat-title">اطلب 🎮</span>
-            <span class="stat-title">تطبيق</span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-value" id="app-counter">0</span>
-            <span class="stat-title" style="color:var(--text-muted)">تطبيق</span>
-        </div>
-    </div>
-
-    <input type="text" class="search-input" id="searchInput" placeholder="🔍 ابحث عن تطبيقك أو لعبتك..." onkeyup="filterApps()">
-    
-    <div class="categories-container" id="categories-container">
-        <button class="cat-btn active" onclick="filterCategory('الكل')">الكل</button>
+        <div class="stats-grid">
+            <div class="stat-card cert-card" onclick="openModal('certModal')">
+                <div class="stat-icon">💎</div>
+                <div class="stat-title">شراء شهادة</div>
+            </div>
+            <div class="stat-card" onclick="openModal('requestModal')">
+                <div class="stat-icon">🎮</div>
+                <div class="stat-title">اطلب تطبيق</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="app-counter">0</div>
+                <div class="stat-title">تطبيق متاح</div>
+            </div>
         </div>
 
-    <div class="apps-grid" id="apps-container">
-        <div class="loading">جارٍ جلب التطبيقات من سيرفر غوغل... ⏳</div>
+        <div class="search-container">
+            <svg class="search-icon" viewBox="0 0 24 24"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"/></svg>
+            <input type="text" class="search-input" id="searchInput" placeholder="ابحث عن تطبيق أو لعبة..." onkeyup="filterApps()">
+        </div>
+
+        <div class="categories" id="categories-container">
+            <button class="cat-btn fav-cat-btn" onclick="filterFavorites(this)">
+                💖 المفضلة
+            </button>
+            <button class="cat-btn active" onclick="filterCategory('الكل', this)">الكل</button>
+            </div>
+
+        <div class="apps-grid" id="apps-container">
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+        </div>
     </div>
 
     <div class="modal" id="requestModal">
         <div class="modal-content">
-            <button class="close-modal" onclick="closeModal('requestModal')">X</button>
-            <h3 class="modal-title">🎮 اطلب تطبيق أو لعبة</h3>
-            
+            <button class="close-modal" onclick="closeModal('requestModal')"></button>
+            <h3 class="modal-title">🎮 اطلب لعبتك</h3>
             <div class="form-group">
-                <label>اسم التطبيق/اللعبة</label>
-                <input type="text" id="reqName" class="form-control" placeholder="مثال: ببجي موبايل">
+                <input type="text" id="reqName" class="form-control" placeholder="اسم التطبيق/اللعبة">
             </div>
             <div class="form-group">
-                <label>رابط اللعبة من الآب ستور</label>
-                <input type="url" id="reqLink" class="form-control" placeholder="https://apps.apple.com/...">
+                <input type="url" id="reqLink" class="form-control" placeholder="رابط اللعبة من الآب ستور">
             </div>
             <div class="form-group">
-                <label>مميزات الهاك المطلوبة</label>
-                <textarea id="reqFeatures" class="form-control" rows="3" placeholder="مثال: رادار، إخفاء عشب..."></textarea>
+                <textarea id="reqFeatures" class="form-control" rows="3" placeholder="مميزات الهاك المطلوبة..."></textarea>
             </div>
-            
-            <button class="btn-submit" onclick="sendToTelegram()">إرسال الطلب عبر تليكرام ✈️</button>
+            <button class="btn-submit" onclick="sendToTelegram()">إرسال الطلب ✈️</button>
         </div>
     </div>
 
     <div class="modal" id="certModal">
         <div class="modal-content">
-            <button class="close-modal" onclick="closeModal('certModal')">X</button>
-            <h3 class="modal-title">💎 الباقات المتاحة 💎</h3>
+            <button class="close-modal" onclick="closeModal('certModal')"></button>
+            <h3 class="modal-title">💎 الباقات المتاحة</h3>
             
-            <div class="package-card pkg-fire">
-                <div class="pkg-title">🔥 الباقة النارية (الأكثر مبيعاً)</div>
-                <div class="pkg-price">💰 10 ماستر</div>
-                <ul class="pkg-features">
-                    <li>• شهادة أبل ذهبية رسمية </li>
-                    <li>• مكتبة ضخمة معدلة ومحذوفة 📱</li>
-                    <li>• ضمان استبدال (شهر) | المدة: سنة ✅</li>
-                </ul>
+            <div class="packages-container">
+                <div class="package-card pkg-fire">
+                    <div class="pkg-header">
+                        <div class="pkg-title">🔥 الباقة النارية</div>
+                        <div class="pkg-price">10 ماستر</div>
+                    </div>
+                    <ul class="pkg-features">
+                        <li>شهادة أبل ذهبية رسمية </li>
+                        <li>مكتبة ضخمة معدلة ومحذوفة</li>
+                        <li>دعم كافة برامج التوقيع</li>
+                        <li>ضمان استبدال شهر | مدة سنة ✅</li>
+                    </ul>
+                </div>
+
+                <div class="package-card pkg-vip">
+                    <div class="pkg-header">
+                        <div class="pkg-title">👑 الباقة النارية VIP</div>
+                        <div class="pkg-price">15 ماستر</div>
+                    </div>
+                    <ul class="pkg-features">
+                        <li>شهادة أبل ذهبية رسمية </li>
+                        <li>مكتبة ضخمة معدلة ومحذوفة</li>
+                        <li>ضمان استبدال 3 أشهر | مدة سنة ✅</li>
+                    </ul>
+                </div>
+
+                <div class="package-card pkg-super">
+                    <div class="pkg-header">
+                        <div class="pkg-title">⚡ الباقة السوبر (الأقوى)</div>
+                        <div class="pkg-price">25 ماستر</div>
+                    </div>
+                    <ul class="pkg-features">
+                        <li>شهادة أبل ذهبية رسمية </li>
+                        <li>ضمان استبدال 6 أشهر | مدة سنة ✅</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="package-card pkg-vip">
-                <div class="pkg-title">👑 الباقة النارية VIP</div>
-                <div class="pkg-price">💰 15 ماستر</div>
-                <ul class="pkg-features">
-                    <li>• شهادة أبل ذهبية رسمية </li>
-                    <li>• مكتبة ضخمة معدلة ومحذوفة 📱</li>
-                    <li>• ضمان استبدال (3 أشهر) | المدة: سنة ✅</li>
-                </ul>
-            </div>
-
-            <div class="package-card pkg-super">
-                <div class="pkg-title">⚡ الباقة السوبر (الأقوى)</div>
-                <div class="pkg-price">💰 25 ماستر</div>
-                <ul class="pkg-features">
-                    <li>• شهادة أبل ذهبية رسمية </li>
-                    <li>• مكتبة ضخمة معدلة ومحذوفة 📱</li>
-                    <li>• ضمان استبدال (6 أشهر) | المدة: سنة ✅</li>
-                </ul>
-            </div>
-
-            <a href="https://t.me/OM_G9" target="_blank" class="btn-submit" style="display:block; text-align:center; text-decoration:none; background:#8b5cf6;">للاشتراك تواصل معنا @OM_G9 📲</a>
+            <a href="https://t.me/OM_G9" target="_blank" class="btn-submit" style="display:block; text-align:center; text-decoration:none; margin-top:20px;">الاشتراك عبر التليكرام @OM_G9</a>
         </div>
     </div>
 
+    <div class="toast" id="toastMsg">تمت الإضافة للمفضلة 💖</div>
+
     <script>
-        // --- 1. إعدادات الوضع الليلي ---
+        // المتغيرات العامة
+        const sheetID = '12OIHyFai2ylBaJYJpoz91uPfeu37dgqJk8Y5w8U9-ao';
+        const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
+        let allApps = [];
+        
+        // جلب المفضلة من ذاكرة الجهاز (Local Storage)
+        let favorites = JSON.parse(localStorage.getItem('hassany_favorites')) || [];
+
+        // 1. نظام المظهر (Dark/Light)
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
-            const btn = document.querySelector('.theme-btn');
-            btn.innerHTML = document.body.classList.contains('dark-mode') ? '☀️ نهاري' : '🌙 ليلي';
-        }
-
-        // --- 2. التحكم بالنوافذ المنبثقة (Modals) ---
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        function toggleDetails(btn) {
-            const desc = btn.parentElement.nextElementSibling;
-            if (desc.style.display === 'block') {
-                desc.style.display = 'none';
-                btn.innerHTML = 'التفاصيل ▾';
+            const isDark = document.body.classList.contains('dark-mode');
+            const text = document.getElementById('theme-text');
+            const icon = document.getElementById('theme-icon');
+            
+            if(isDark) {
+                text.innerText = 'نهاري';
+                icon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
             } else {
-                desc.style.display = 'block';
-                btn.innerHTML = 'إخفاء ▴';
+                text.innerText = 'ليلي';
+                icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
             }
         }
 
-        // --- 3. إرسال الطلب للتليكرام ---
+        // 2. التحكم بالنوافذ المنبثقة
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        // إغلاق النافذة عند الضغط خارجها
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('show');
+                setTimeout(() => event.target.style.display = 'none', 300);
+            }
+        }
+
+        // 3. التوست (الإشعارات)
+        function showToast(msg) {
+            const toast = document.getElementById('toastMsg');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        // 4. نظام المفضلة (إضافة/حذف)
+        function toggleFavorite(appName, btnElement) {
+            const index = favorites.indexOf(appName);
+            if(index > -1) {
+                // موجود، نحذفه
+                favorites.splice(index, 1);
+                btnElement.classList.remove('favorited');
+                showToast('تم الحذف من المفضلة 🗑️');
+            } else {
+                // مو موجود، نضيفه
+                favorites.push(appName);
+                btnElement.classList.add('favorited');
+                showToast('تمت الإضافة للمفضلة 💖');
+            }
+            // حفظ بالتلفون
+            localStorage.setItem('hassany_favorites', JSON.stringify(favorites));
+        }
+
+        // 5. زر التفاصيل الناعم
+        function toggleDetails(btn) {
+            btn.classList.toggle('open');
+            const wrapper = btn.closest('.app-card').querySelector('.app-description-wrapper');
+            if (wrapper.style.maxHeight) {
+                wrapper.style.maxHeight = null;
+                btn.innerHTML = 'التفاصيل <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>';
+            } else {
+                wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+                btn.innerHTML = 'إخفاء <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>';
+            }
+        }
+
+        // 6. إرسال للتليكرام
         function sendToTelegram() {
-            const name = document.getElementById('reqName').value;
-            const link = document.getElementById('reqLink').value;
-            const features = document.getElementById('reqFeatures').value;
-            
-            if(!name) { alert('الرجاء كتابة اسم التطبيق!'); return; }
-            
-            const message = `*طلب لعبة/تطبيق جديد* 🎮\n\n📌 *الاسم:* ${name}\n🔗 *الرابط:* ${link}\n⚙️ *المميزات المطلوبة:* ${features}`;
-            const encodedMessage = encodeURIComponent(message);
-            window.open(`https://t.me/OM_G9?text=${encodedMessage}`, '_blank');
+            const n = document.getElementById('reqName').value;
+            const l = document.getElementById('reqLink').value;
+            const f = document.getElementById('reqFeatures').value;
+            if(!n) return alert('اكتب اسم اللعبة أولاً!');
+            const msg = `*طلب لعبة* 🎮\n\n📌 الاسم: ${n}\n🔗 الرابط: ${l}\n⚙️ المميزات: ${f}`;
+            window.open(`https://t.me/OM_G9?text=${encodeURIComponent(msg)}`, '_blank');
             closeModal('requestModal');
         }
 
-        // --- 4. جلب البيانات من جدول غوغل ---
-        // رابط الجدول الخاص بك (تم استخراج الـ ID منه)
-        const sheetID = '12OIHyFai2ylBaJYJpoz91uPfeu37dgqJk8Y5w8U9-ao';
-        const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
-
-        let allApps = []; // مصفوفة لحفظ التطبيقات للبحث والفلترة
-
+        // 7. جلب البيانات من جدول غوغل
         fetch(url)
             .then(res => res.text())
             .then(text => {
-                // تحويل الاستجابة إلى JSON صالح
-                const jsonStr = text.substring(47, text.length - 2);
-                const data = JSON.parse(jsonStr);
+                const data = JSON.parse(text.substring(47, text.length - 2));
                 const rows = data.table.rows;
+                allApps = [];
+                let cats = new Set();
                 
-                const container = document.getElementById('apps-container');
-                container.innerHTML = ''; 
-                
-                // تخطي الصف الأول إذا كان عناوين (اسم التطبيق، الرابط...)
-                let startIndex = 0;
-                if(rows[0].c[0] && rows[0].c[0].v === 'اسم التطبيق') startIndex = 1;
+                let start = (rows[0].c[0] && rows[0].c[0].v === 'اسم التطبيق') ? 1 : 0;
 
-                let categoriesSet = new Set(); // لجمع الأقسام بدون تكرار
-
-                for (let i = startIndex; i < rows.length; i++) {
-                    const row = rows[i].c;
-                    if (!row || !row[0] || !row[0].v) continue; // تخطي الصفوف الفارغة
-
-                    // سحب البيانات حسب الأعمدة (A=0, B=1, C=2, D=3, E=4, F=5, G=6, H=7)
+                for (let i = start; i < rows.length; i++) {
+                    const r = rows[i].c;
+                    if (!r || !r[0] || !r[0].v) continue;
                     const app = {
-                        name: row[0] ? row[0].v : 'بدون اسم',
-                        icon: row[1] ? row[1].v : 'https://via.placeholder.com/150',
-                        category: row[2] ? row[2].v : 'عام',
-                        version: row[3] ? row[3].v : 'v1.0',
-                        size: row[4] ? row[4].v : 'غير معروف',
-                        badge: row[5] ? row[5].v : '',
-                        desc: row[6] ? row[6].v : 'لا يوجد وصف متاح لهذا التطبيق حالياً.',
-                        link: row[7] ? row[7].v : '#'
+                        name: r[0]?r[0].v:'بدون اسم', icon: r[1]?r[1].v:'',
+                        category: r[2]?r[2].v:'عام', version: r[3]?r[3].v:'v1.0',
+                        size: r[4]?r[4].v:'-', badge: r[5]?r[5].v:'',
+                        desc: r[6]?r[6].v:'لا يوجد وصف', link: r[7]?r[7].v:'#'
                     };
-                    
                     allApps.push(app);
-                    if(app.category) categoriesSet.add(app.category);
+                    if(app.category) cats.add(app.category);
                 }
 
-                // تحديث عداد التطبيقات
                 document.getElementById('app-counter').innerText = allApps.length;
 
-                // إنشاء أزرار الأقسام تلقائياً
-                const catContainer = document.getElementById('categories-container');
-                categoriesSet.forEach(cat => {
-                    catContainer.innerHTML += `<button class="cat-btn" onclick="filterCategory('${cat}', this)">${cat}</button>`;
+                // رسم الأقسام
+                const catCont = document.getElementById('categories-container');
+                cats.forEach(c => {
+                    catCont.innerHTML += `<button class="cat-btn" onclick="filterCategory('${c}', this)">${c}</button>`;
                 });
 
-                renderApps(allApps); // عرض كل التطبيقات بالبداية
+                renderApps(allApps);
             })
             .catch(err => {
-                document.getElementById('apps-container').innerHTML = '<div class="loading" style="color:red;">❌ حدث خطأ في جلب البيانات، تأكد أن جدول غوغل "عام" (Anyone with the link).</div>';
-                console.error(err);
+                document.getElementById('apps-container').innerHTML = '<div style="text-align:center; padding:20px; color:red; font-weight:bold;">❌ خطأ بالاتصال بجدول غوغل</div>';
             });
 
-        // --- 5. عرض التطبيقات وإنشاء الكروت ---
-        function renderApps(appsArray) {
-            const container = document.getElementById('apps-container');
-            container.innerHTML = '';
+        // 8. رسم التطبيقات مع أيقونات SVG
+        function renderApps(apps) {
+            const cont = document.getElementById('apps-container');
+            cont.innerHTML = '';
             
-            if(appsArray.length === 0) {
-                container.innerHTML = '<div class="loading">لا توجد تطبيقات مطابقة لبحثك 🚫</div>';
+            if(apps.length === 0) {
+                cont.innerHTML = '<div style="text-align:center; padding:40px; font-weight:bold; color:var(--text-muted);">لا توجد تطبيقات 🚫</div>';
                 return;
             }
 
-            appsArray.forEach(app => {
-                // تنسيق الشارة إذا كانت موجودة (مثال: نار أو جديد)
+            apps.forEach((app, i) => {
+                const isFav = favorites.includes(app.name) ? 'favorited' : '';
+                const delay = i * 0.05; // تأخير حركي متسلسل للكروت
+
                 let badgeHTML = '';
                 if(app.badge && app.badge !== 'null' && app.badge.trim() !== '') {
-                    badgeHTML = `<span style="background:rgba(239,68,68,0.1); color:#ef4444; padding:2px 8px; border-radius:50px; font-size:11px; margin-right:5px;">${app.badge}</span>`;
+                    badgeHTML = `<span class="badge">${app.badge}</span>`;
                 }
 
+                // أيقونة الإصدار (SVG Box)
+                const verIcon = `<svg class="meta-icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>`;
+                
+                // أيقونة الحجم (SVG Hard Drive/Save)
+                const sizeIcon = `<svg class="meta-icon" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>`;
+
                 const card = `
-                    <div class="app-card" data-category="${app.category}">
+                    <div class="app-card" style="animation-delay: ${delay}s">
                         <div class="app-header">
-                            <img class="app-icon" src="${app.icon}" alt="icon">
+                            <img class="app-icon" src="${app.icon}" alt="icon" onerror="this.src='https://via.placeholder.com/150'">
                             <div class="app-info">
-                                <div class="app-name">${app.name} ${badgeHTML}</div>
-                                <div class="app-meta">📦 ${app.version} &nbsp;•&nbsp; 💾 ${app.size}</div>
+                                <div class="app-name-row">
+                                    <div class="app-name">${app.name} ${badgeHTML}</div>
+                                    <button class="fav-btn ${isFav}" onclick="toggleFavorite('${app.name}', this)">
+                                        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                    </button>
+                                </div>
+                                <div class="app-meta">
+                                    <span class="meta-item">${verIcon} ${app.version}</span>
+                                    <span>•</span>
+                                    <span class="meta-item">${sizeIcon} ${app.size}</span>
+                                </div>
                             </div>
                         </div>
                         <div class="card-actions">
-                            <a href="${app.link}" target="_blank" class="btn-download">تحميل</a>
-                            <button class="btn-details" onclick="toggleDetails(this)">التفاصيل ▾</button>
+                            <a href="${app.link}" target="_blank" class="btn-download">تحميل ⬇</a>
+                            <button class="btn-details" onclick="toggleDetails(this)">التفاصيل <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></button>
                         </div>
-                        <div class="app-description">
-                            ${app.desc}
+                        <div class="app-description-wrapper">
+                            <div class="app-description">${app.desc}</div>
                         </div>
                     </div>
                 `;
-                container.innerHTML += card;
+                cont.innerHTML += card;
             });
         }
 
-        // --- 6. نظام البحث والفلترة ---
+        // 9. الفلترة
         function filterApps() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = allApps.filter(app => app.name.toLowerCase().includes(query));
-            renderApps(filtered);
-            
-            // إزالة التفعيل عن كل الأقسام عند البحث
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector('.cat-btn').classList.add('active'); // تفعيل زر "الكل"
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            renderApps(allApps.filter(a => a.name.toLowerCase().includes(q)));
+            updateActiveBtn(null);
         }
 
-        function filterCategory(cat, btnElement = null) {
-            document.getElementById('searchInput').value = ''; // مسح البحث
-            
-            if(cat === 'الكل') {
-                renderApps(allApps);
-            } else {
-                const filtered = allApps.filter(app => app.category === cat);
-                renderApps(filtered);
-            }
+        function filterCategory(cat, btn) {
+            document.getElementById('searchInput').value = '';
+            renderApps(cat === 'الكل' ? allApps : allApps.filter(a => a.category === cat));
+            updateActiveBtn(btn);
+        }
 
-            // تفعيل الزر المضغوط وتغيير لونه
+        function filterFavorites(btn) {
+            document.getElementById('searchInput').value = '';
+            renderApps(allApps.filter(a => favorites.includes(a.name)));
+            updateActiveBtn(btn);
+        }
+
+        function updateActiveBtn(activeBtn) {
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            if(btnElement) {
-                btnElement.classList.add('active');
-            } else {
-                document.querySelector('.cat-btn').classList.add('active');
-            }
+            if(activeBtn) activeBtn.classList.add('active');
         }
     </script>
 </body>
