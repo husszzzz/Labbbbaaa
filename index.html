@@ -2,48 +2,353 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Hassany Store - النخبة</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hassany IPA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #151c2c;
+            --text-color: #ffffff;
+            --text-muted: #8a99ad;
+            --primary-color: #38bdf8;
+            --accent-gold: #fbbf24;
+            --success-color: #22c55e;
+            --border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .light-mode {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #0f172a;
+            --text-muted: #64748b;
+            --primary-color: #0284c7;
+            --accent-gold: #d97706;
+            --success-color: #16a34a;
+            --border-color: rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* شريط التحكم العلوي */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            background: linear-gradient(45deg, var(--primary-color), #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .theme-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 12px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        /* حقل البحث الفوري */
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            color: var(--text-color);
+            font-size: 15px;
+            font-weight: 600;
+            outline: none;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+        }
+
+        /* الأقسام والفلاتر */
+        .categories-container {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            scrollbar-width: none;
+        }
+
+        .categories-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .cat-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 16px;
+            border-radius: 50px;
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .cat-btn.active {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border-color: var(--primary-color);
+        }
+
+        /* شبكة عرض كروت التطبيقات */
+        .apps-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .app-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-header {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .app-icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 16px;
+            object-fit: cover;
+            background-color: #2a354f;
+            border: 1px solid var(--border-color);
+        }
+
+        .app-title-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .app-name {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .badges-wrapper {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 50px;
+        }
+
+        .badge.trend {
+            background-color: rgba(251, 191, 36, 0.15);
+            color: var(--accent-gold);
+        }
+
+        .badge.new {
+            background-color: rgba(168, 85, 247, 0.15);
+            color: #c084fc;
+        }
+
+        .badge.status-ok {
+            background-color: rgba(34, 197, 94, 0.15);
+            color: var(--success-color);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* تفاصيل التطبيق الجانبية */
+        .app-details {
+            display: flex;
+            gap: 15px;
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding: 0 5px;
+        }
+
+        /* وصف التطبيق */
+        .app-description {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 18px;
+            padding: 0 5px;
+        }
+
+        /* زر التحميل الفوري */
+        .install-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color), #0284c7);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+            cursor: pointer;
+        }
+
+        .install-btn:hover {
+            opacity: 0.95;
+        }
+
+        /* التذييل / الدعم الفني */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+        }
     </style>
 </head>
-<body class="bg-slate-900 text-white font-sans transition-colors duration-500" id="body">
+<body>
 
-    <header class="p-6 text-center">
-        <h1 class="text-4xl font-bold mb-2">Hassany Store</h1>
-        <button onclick="changeTheme()" class="bg-blue-600 px-4 py-2 rounded-full">تغيير الألوان</button>
+    <header>
+        <div class="logo">HASSANY IPA</div>
+        <button class="theme-btn" onclick="toggleTheme()">🌙 مظهر</button>
     </header>
 
-    <section class="max-w-4xl mx-auto p-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="glass p-6 rounded-2xl transform transition hover:scale-105">
-            <img src="app-icon.png" class="w-16 h-16 mb-4 rounded-xl" alt="App">
-            <h2 class="text-xl font-bold">اسم التطبيق</h2>
-            <p class="text-gray-300 mt-2">وصف احترافي للتطبيق يوضح ميزاته القوية.</p>
-            <button onclick="playSound()" class="mt-4 w-full bg-green-500 py-2 rounded-lg font-bold">تثبيت الآن</button>
+    <div class="search-container">
+        <input type="text" class="search-input" placeholder="ابحث عن تطبيقك أو لعبتك المفضلة...">
+    </div>
+
+    <div class="categories-container">
+        <button class="cat-btn active">🔥 الكل</button>
+        <button class="cat-btn">📱 تطبيقات بلس</button>
+        <button class="cat-btn">🎮 ألعاب مهكرة</button>
+        <button class="cat-btn">⚙️ أدوات وجلبريك</button>
+    </div>
+
+    <div class="apps-grid">
+
+        <div class="app-card">
+            <div class="app-header">
+                <img class="app-icon" src="https://placehold.co/150x150/2a354f/ffffff?text=TikTok" alt="أيقونة التطبيق">
+                <div class="app-title-wrapper">
+                    <div class="app-name">تيك توك لورد</div>
+                    <div class="badges-wrapper">
+                        <span class="badge trend">🔥 تريند</span>
+                        <span class="badge status-ok">🟢 شغال</span>
+                    </div>
+                </div>
+            </div>
+            <div class="app-details">
+                <span>📦 الإصدار: v35.1</span>
+                <span>•</span>
+                <span>💾 الحجم: 90 MB</span>
+            </div>
+            <p class="app-description">
+                نسخة تيك توك معدلة بميزات LRD كاملة. تتيح لك حفظ الفيديوهات بدون علامة مائية، تصفح الحسابات بشكل متخفي، وزيادة عدد حروف التعليقات.
+            </p>
+            <a href="#" class="install-btn">📲 تثبيت مباشر</a>
         </div>
-    </section>
 
-    <section class="max-w-4xl mx-auto mt-10 p-6 glass rounded-2xl">
-        <h3 class="text-2xl mb-4">جدول دوري الفرق</h3>
-        <table class="w-full text-center">
-            <thead><tr class="border-b border-gray-700"><th>الفريق</th><th>الحالة</th></tr></thead>
-            <tbody>
-                <tr><td>المجلس الأعلى</td><td>متصدر</td></tr>
-                <tr><td>المتفوقين</td><td>منافس</td></tr>
-                <tr><td>المحارب</td><td>قوي</td></tr>
-                <tr><td>العودة</td><td>صاعد</td></tr>
-            </tbody>
-        </table>
-    </section>
+        <div class="app-card">
+            <div class="app-header">
+                <img class="app-icon" src="https://placehold.co/150x150/2a354f/ffffff?text=MC" alt="أيقونة التطبيق">
+                <div class="app-title-wrapper">
+                    <div class="app-name">Minecraft Mobile</div>
+                    <div class="badges-wrapper">
+                        <span class="badge new">✨ جديد</span>
+                        <span class="badge status-ok">🟢 شغال</span>
+                    </div>
+                </div>
+            </div>
+            <div class="app-details">
+                <span>📦 الإصدار: v1.20</span>
+                <span>•</span>
+                <span>💾 الحجم: 450 MB</span>
+            </div>
+            <p class="app-description">
+                لعبة البناء والمغامرات الشهيرة ماين كرافت بنسختها الكاملة المفتوحة المخصصة لأجهزة الآيفون والآيباد بدون قيود.
+            </p>
+            <a href="#" class="install-btn">📲 تثبيت مباشر</a>
+        </div>
 
-    <audio id="installSound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
+    </div>
+
+    <footer>
+        <p>تواجه مشكلة أو رابط عاطل؟ <a href="#">💬 تواصل مع الدعم الفني</a></p>
+    </footer>
 
     <script>
-        function playSound() { document.getElementById('installSound').play(); }
-        function changeTheme() {
-            document.getElementById('body').classList.toggle('bg-slate-900');
-            document.getElementById('body').classList.toggle('bg-indigo-900');
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const btn = document.querySelector('.theme-btn');
+            if(document.body.classList.contains('light-mode')) {
+                btn.innerHTML = '☀️ مظهر';
+            } else {
+                btn.innerHTML = '🌙 مظهر';
+            }
         }
     </script>
 </body>
