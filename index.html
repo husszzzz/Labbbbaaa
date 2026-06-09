@@ -3,239 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شهادات الحسني hassany IPA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <title>مستخرج كود HTML</title>
     <style>
         * {
             box-sizing: border-box;
-            font-family: 'Tajawal', sans-serif;
             margin: 0;
             padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: #000000;
-            color: #ffffff;
+            background-color: #121214;
+            color: #e1e1e6;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            text-align: center;
+            padding: 20px;
         }
 
         .container {
-            background-color: #1c1c1e;
-            padding: 40px 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            width: 90%;
-            max-width: 400px;
-            transition: all 0.3s ease;
+            background-color: #202024;
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         }
 
         h1 {
+            text-align: center;
+            margin-bottom: 25px;
             font-size: 24px;
-            margin-bottom: 10px;
-            color: #0a84ff;
+            color: #00adb5;
         }
 
-        p.subtitle {
-            font-size: 14px;
-            color: #8e8e93;
-            margin-bottom: 30px;
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        input[type="text"] {
-            width: 100%;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid #3a3a3c;
-            background-color: #2c2c2e;
+        input[type="url"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #323238;
+            border-radius: 6px;
+            background-color: #121214;
             color: #fff;
             font-size: 16px;
-            margin-bottom: 20px;
-            text-align: center;
             outline: none;
+            transition: border-color 0.3s;
         }
 
-        input[type="text"]:focus {
-            border-color: #0a84ff;
+        input[type="url"]:focus {
+            border-color: #00adb5;
         }
 
         button {
-            width: 100%;
-            padding: 15px;
+            padding: 12px 24px;
+            background-color: #00adb5;
+            color: #fff;
             border: none;
-            border-radius: 12px;
-            background-color: #0a84ff;
-            color: white;
+            border-radius: 6px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s;
-            margin-bottom: 10px;
+            transition: background-color 0.2s;
         }
 
         button:hover {
-            background-color: #0070e0;
+            background-color: #008c95;
         }
 
-        button:disabled {
-            background-color: #3a3a3c;
-            color: #8e8e93;
-            cursor: not-allowed;
-        }
-
-        .step {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .step.active {
-            display: block;
-        }
-
-        .timer {
-            font-size: 48px;
-            font-weight: bold;
-            color: #30d158;
-            margin: 20px 0;
-        }
-
-        .file-box {
-            background-color: #2c2c2e;
-            padding: 15px;
-            border-radius: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .file-box span {
-            font-size: 14px;
-            font-weight: bold;
-            color: #e5e5ea;
-        }
-
-        .file-box button {
-            width: auto;
-            margin: 0;
-            padding: 8px 15px;
-            font-size: 14px;
-        }
-
-        .status-text {
+        .result-container {
+            position: relative;
             margin-top: 20px;
+        }
+
+        .btn-copy {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 6px 12px;
+            background-color: #323238;
+            font-size: 13px;
+        }
+
+        .btn-copy:hover {
+            background-color: #42424a;
+        }
+
+        textarea {
+            width: 100%;
+            height: 400px;
+            background-color: #121214;
+            border: 2px solid #323238;
+            border-radius: 6px;
+            color: #00ff66;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 15px;
             font-size: 14px;
-            color: #ff9f0a;
-            animation: pulse 1.5s infinite;
+            resize: vertical;
+            outline: none;
+            direction: ltr;
+            text-align: left;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
+        .status {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #a8a8b3;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        
-        <div id="step1" class="step active">
-            <h1>شهادات الحسني<br>hassany IPA</h1>
-            <p class="subtitle">النظام الآلي لاستخراج الشهادات</p>
-            <input type="text" id="udidInput" placeholder="أدخل رمز UDID هنا">
-            <button onclick="goToStep2()">إدخال UDID</button>
-        </div>
-
-        <div id="step2" class="step">
-            <h1>اختر مدة الشهادة</h1>
-            <p class="subtitle">يرجى تحديد فترة الصلاحية للشهادة</p>
-            <button onclick="startTimer()">شهر واحد</button>
-            <button onclick="startTimer()">ثلاثة أشهر</button>
-            <button onclick="startTimer()">سنة كاملة</button>
-        </div>
-
-        <div id="step3" class="step">
-            <h1>جاري تجهيز الملفات</h1>
-            <p class="subtitle">يرجى عدم إغلاق الصفحة...</p>
-            <div class="timer" id="countdown">5</div>
-        </div>
-
-        <div id="step4" class="step">
-            <h1>اكتمل التجهيز</h1>
-            <p class="subtitle">ملفات الشهادة جاهزة</p>
-            
-            <div class="file-box">
-                <span>Hassany_Cert.p12</span>
-                <button id="dlBtn1" disabled>تحميل</button>
-            </div>
-            
-            <div class="file-box">
-                <span>Profile.mobileprovision</span>
-                <button id="dlBtn2" disabled>تحميل</button>
-            </div>
-
-            <div class="status-text" id="uploadStatus">
-                ⏳ جاري الرفع في سيرفرات أبل (Apple)، يرجى الانتظار...
-            </div>
-        </div>
-
+<div class="container">
+    <h1>🗂️ مستخرج كود HTML للمواقع</h1>
+    
+    <div class="input-group">
+        <input type="url" id="targetUrl" placeholder="ضع رابط الموقع هنا (مثال: https://example.com)" required>
+        <button onclick="fetchHTML()">استخراج الكود</button>
     </div>
 
-    <script>
-        function goToStep2() {
-            const udid = document.getElementById('udidInput').value;
-            if (udid.trim() === '') {
-                alert('يرجى إدخال UDID أولاً!');
-                return;
+    <div id="statusMessage" class="status"></div>
+
+    <div class="result-container">
+        <button class="btn-copy" onclick="copyCode()">نسخ الكود</button>
+        <textarea id="outputHtml" placeholder="كود الـ HTML سيظهر هنا..." readonly></textarea>
+    </div>
+</div>
+
+<script>
+    async function fetchHTML() {
+        const urlInput = document.getElementById('targetUrl').value.trim();
+        const outputTextArea = document.getElementById('outputHtml');
+        const statusMessage = document.getElementById('statusMessage');
+
+        if (!urlInput) {
+            alert('الرجاء إدخال رابط الموقع أولاً!');
+            return;
+        }
+
+        // تنظيف الشاشة وتجهيز كود التحميل
+        outputTextArea.value = '';
+        statusMessage.textContent = 'جاري جلب كود الموقع، يرجى الانتظار...';
+        statusMessage.style.color = '#00adb5';
+
+        try {
+            // استخدام البروكسي لتخطي حماية CORS في المتصفح
+            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(urlInput)}`;
+            
+            const response = await fetch(proxyUrl);
+            if (!response.ok) throw new Error('فشل في الاتصال بالرابط');
+
+            const data = await response.json();
+            
+            if (data.contents) {
+                outputTextArea.value = data.contents;
+                statusMessage.textContent = 'تم استخراج الكود بنجاح!';
+                statusMessage.style.color = '#00ff66';
+            } else {
+                throw new Error('محتوى الصفحة فارغ أو غير مصرح بجلبها');
             }
-            document.getElementById('step1').classList.remove('active');
-            document.getElementById('step2').classList.add('active');
+
+        } catch (error) {
+            outputTextArea.value = '';
+            statusMessage.textContent = 'حدث خطأ: تأكد من صحة الرابط أو جرب موقعاً آخر.';
+            statusMessage.style.color = '#e04040';
+            console.error(error);
         }
+    }
 
-        function startTimer() {
-            document.getElementById('step2').classList.remove('active');
-            document.getElementById('step3').classList.add('active');
-            
-            let timeLeft = 5;
-            const timerDisplay = document.getElementById('countdown');
-            
-            const timerInterval = setInterval(() => {
-                timeLeft--;
-                timerDisplay.textContent = timeLeft;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    showFiles();
-                }
-            }, 1000);
+    function copyCode() {
+        const outputTextArea = document.getElementById('outputHtml');
+        if (!outputTextArea.value) {
+            alert('لا يوجد كود لنسخه بعد!');
+            return;
         }
-
-        function showFiles() {
-            document.getElementById('step3').classList.remove('active');
-            document.getElementById('step4').classList.add('active');
-
-            // محاكاة عملية الرفع في سيرفرات أبل (تستغرق 6 ثواني)
-            setTimeout(() => {
-                const statusText = document.getElementById('uploadStatus');
-                statusText.innerHTML = "✅ اكتمل الرفع بنجاح! يمكنك التحميل الآن.";
-                statusText.style.color = "#30d158";
-                statusText.style.animation = "none";
-
-                // تفعيل أزرار التحميل
-                document.getElementById('dlBtn1').disabled = false;
-                document.getElementById('dlBtn2').disabled = false;
-            }, 6000); // 6000 مللي ثانية = 6 ثواني
-        }
-    </script>
+        
+        outputTextArea.select();
+        document.execCommand('copy');
+        alert('تم نسخ كود الـ HTML إلى الحافظة!');
+    }
+</script>
 
 </body>
 </html>
