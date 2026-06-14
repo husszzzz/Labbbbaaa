@@ -2,193 +2,182 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مستخرج كود HTML</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>hassanyIPA</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
         body {
-            background-color: #121214;
-            color: #e1e1e6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #f4f7fe;
+            --card-bg: #ffffff;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary: #ec4899;
+            --border: #e5e7eb;
+            --modal-bg: rgba(0, 0, 0, 0.5);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.85);
         }
 
-        .container {
-            background-color: #202024;
-            width: 100%;
-            max-width: 800px;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        .dark-mode {
+            --bg-color: #0b0f19;
+            --card-bg: #151c2c;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #818cf8;
+            --secondary: #f472b6;
+            --border: #2a3441;
+            --modal-bg: rgba(0, 0, 0, 0.8);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.5);
+            --glass-bg: rgba(21, 28, 44, 0.85);
         }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 25px;
-            font-size: 24px;
-            color: #00adb5;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; outline: none; }
+        body { background-color: var(--bg-color); color: var(--text-main); transition: background-color 0.4s ease, color 0.4s ease; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        .container { flex: 1; max-width: 650px; margin: 0 auto; padding: 20px; width: 100%; }
 
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+        /* الشريط العلوي مع تأثير النجوم */
+        .ribbon-wrapper { position: absolute; top: 0; right: 0; width: 120px; height: 120px; overflow: hidden; z-index: 20; pointer-events: none; }
+        .ribbon {
+            position: absolute; top: 25px; right: -35px; width: 160px;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            color: white; text-align: center; font-size: 11px; font-weight: 900; padding: 5px 0;
+            transform: rotate(45deg); box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
+        .ribbon::before {
+            content: "✨"; position: absolute; left: 10px; top: 2px;
+            animation: starPulse 1.5s infinite;
+        }
+        @keyframes starPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
-        input[type="url"] {
-            flex: 1;
-            padding: 12px 15px;
-            border: 2px solid #323238;
-            border-radius: 6px;
-            background-color: #121214;
-            color: #fff;
-            font-size: 16px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        input[type="url"]:focus {
-            border-color: #00adb5;
-        }
-
-        button {
-            padding: 12px 24px;
-            background-color: #00adb5;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        button:hover {
-            background-color: #008c95;
-        }
-
-        .result-container {
-            position: relative;
-            margin-top: 20px;
-        }
-
-        .btn-copy {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 6px 12px;
-            background-color: #323238;
-            font-size: 13px;
-        }
-
-        .btn-copy:hover {
-            background-color: #42424a;
-        }
-
-        textarea {
-            width: 100%;
-            height: 400px;
-            background-color: #121214;
-            border: 2px solid #323238;
-            border-radius: 6px;
-            color: #00ff66;
-            font-family: 'Courier New', Courier, monospace;
-            padding: 15px;
-            font-size: 14px;
-            resize: vertical;
-            outline: none;
-            direction: ltr;
-            text-align: left;
-        }
-
-        .status {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 14px;
-            color: #a8a8b3;
-        }
+        /* باقي الستايلات الأصلية ... */
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-top: 10px; }
+        .logo { font-size: 26px; font-weight: 900; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .theme-btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--text-main); padding: 10px 18px; border-radius: 50px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm); transition: 0.3s; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 25px; }
+        .stat-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 18px 5px; text-align: center; cursor: pointer; box-shadow: var(--shadow-sm); transition: 0.3s; }
+        .search-wrapper { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; }
+        .search-container { position: relative; flex: 1; }
+        .search-input { width: 100%; padding: 18px 20px 18px 55px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; color: var(--text-main); font-size: 15px; font-weight: 700; }
+        .sort-select { padding: 18px 15px; border-radius: 20px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-main); font-weight: 800; cursor: pointer; }
+        .apps-grid { display: flex; flex-direction: column; gap: 18px; }
+        .app-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px; padding: 20px; position: relative; overflow: hidden; }
+        .btn-download { flex: 1.5; padding: 14px; background: var(--primary); color: white; text-align: center; border-radius: 18px; text-decoration: none; font-weight: 900; border: none; cursor: pointer; }
+        
+        #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 10000; display: flex; justify-content: center; align-items: center; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>🗂️ مستخرج كود HTML للمواقع</h1>
-    
-    <div class="input-group">
-        <input type="url" id="targetUrl" placeholder="ضع رابط الموقع هنا (مثال: https://example.com)" required>
-        <button onclick="fetchHTML()">استخراج الكود</button>
+    <div id="splash-screen"><h1>Hassany IPA</h1></div>
+
+    <div class="container" id="main-content">
+        <header>
+            <div class="logo">Hassany IPA</div>
+            <button class="theme-btn" onclick="toggleTheme()">تغيير المظهر</button>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card" onclick="alert('شراء شهادة')">شراء شهادة</div>
+            <div class="stat-card" onclick="alert('اطلب تطبيق')">اطلب تطبيق</div>
+            <div class="stat-card"><span id="app-counter">0</span> تطبيق</div>
+        </div>
+
+        <div class="search-wrapper">
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="ابحث..." onkeyup="filterApps()">
+            </div>
+            <select class="sort-select" id="sortSelect" onchange="applySort()">
+                <option value="newest">الأحدث</option>
+            </select>
+        </div>
+
+        <div class="apps-grid" id="apps-container"></div>
     </div>
 
-    <div id="statusMessage" class="status"></div>
-
-    <div class="result-container">
-        <button class="btn-copy" onclick="copyCode()">نسخ الكود</button>
-        <textarea id="outputHtml" placeholder="كود الـ HTML سيظهر هنا..." readonly></textarea>
-    </div>
-</div>
-
-<script>
-    async function fetchHTML() {
-        const urlInput = document.getElementById('targetUrl').value.trim();
-        const outputTextArea = document.getElementById('outputHtml');
-        const statusMessage = document.getElementById('statusMessage');
-
-        if (!urlInput) {
-            alert('الرجاء إدخال رابط الموقع أولاً!');
-            return;
-        }
-
-        // تنظيف الشاشة وتجهيز كود التحميل
-        outputTextArea.value = '';
-        statusMessage.textContent = 'جاري جلب كود الموقع، يرجى الانتظار...';
-        statusMessage.style.color = '#00adb5';
-
-        try {
-            // استخدام البروكسي لتخطي حماية CORS في المتصفح
-            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(urlInput)}`;
-            
-            const response = await fetch(proxyUrl);
-            if (!response.ok) throw new Error('فشل في الاتصال بالرابط');
-
-            const data = await response.json();
-            
-            if (data.contents) {
-                outputTextArea.value = data.contents;
-                statusMessage.textContent = 'تم استخراج الكود بنجاح!';
-                statusMessage.style.color = '#00ff66';
-            } else {
-                throw new Error('محتوى الصفحة فارغ أو غير مصرح بجلبها');
+    <script>
+        // دالة حماية الروابط والتحقق
+        function safeDownload(url, appName) {
+            // تحقق إذا كان الطلب من موقعك
+            const mySite = "husszzzz.github.io";
+            if (!window.location.hostname.includes(mySite)) {
+                alert("⚠️ تحذير: لا يمكنك تحميل الملف مباشرة! يرجى التوجه لموقع Hassany IPA.");
+                return;
             }
-
-        } catch (error) {
-            outputTextArea.value = '';
-            statusMessage.textContent = 'حدث خطأ: تأكد من صحة الرابط أو جرب موقعاً آخر.';
-            statusMessage.style.color = '#e04040';
-            console.error(error);
+            window.location.href = url;
         }
-    }
 
-    function copyCode() {
-        const outputTextArea = document.getElementById('outputHtml');
-        if (!outputTextArea.value) {
-            alert('لا يوجد كود لنسخه بعد!');
-            return;
+        // منع كليك يمين
+        document.addEventListener('contextmenu', e => e.preventDefault());
+
+        const sheetID = '12OIHyFai2ylBaJYJpoz91uPfeu37dgqJk8Y5w8U9-ao';
+        const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
+        let allApps = [];
+
+        fetch(url)
+            .then(res => res.text())
+            .then(text => {
+                const data = JSON.parse(text.substring(47, text.length - 2));
+                const rows = data.table.rows;
+                
+                rows.forEach((row, index) => {
+                    if (index === 0 || !row.c[0]) return;
+                    
+                    // قراءة الأعمدة W (22) و X (23)
+                    const isFeatured = row.c[22] ? row.c[22].v : "";
+                    const badgeText = row.c[23] ? row.c[23].v : "موصى به";
+
+                    allApps.push({
+                        name: row.c[0].v,
+                        icon: row.c[1] ? row.c[1].v : "",
+                        link: row.c[7] ? row.c[7].v : "#",
+                        featured: isFeatured === "نعم",
+                        badge: badgeText
+                    });
+                });
+                renderApps(allApps);
+            });
+
+        function renderApps(apps) {
+            const cont = document.getElementById('apps-container');
+            cont.innerHTML = '';
+            apps.forEach(app => {
+                const ribbon = app.featured ? `<div class="ribbon-wrapper"><div class="ribbon">${app.badge}</div></div>` : '';
+                cont.innerHTML += `
+                    <div class="app-card">
+                        ${ribbon}
+                        <h3>${app.name}</h3>
+                        <button class="btn-download" onclick="safeDownload('${app.link}', '${app.name}')">تحميل</button>
+                    </div>
+                `;
+            });
+            document.getElementById('app-counter').innerText = apps.length;
         }
-        
-        outputTextArea.select();
-        document.execCommand('copy');
-        alert('تم نسخ كود الـ HTML إلى الحافظة!');
-    }
-</script>
 
+        function filterApps() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allApps.filter(a => a.name.toLowerCase().includes(q));
+            renderApps(filtered);
+        }
+
+        function toggleTheme() { document.body.classList.toggle('dark-mode'); }
+    </script>
 </body>
 </html>
