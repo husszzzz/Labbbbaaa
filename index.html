@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجر حساني | Hassany Store</title>
+    <title>متجر الحسني | Al-Hasani Store</title>
     
-    <!-- خطوط جوجل (Tajawal و Noto Kufi لجمالية الخط العربي) -->
+    <!-- خطوط جوجل -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
@@ -15,10 +15,10 @@
 
     <style>
         /* =========================================
-           1. المتغيرات والأساسيات (Variables & Reset)
+           1. المتغيرات والأساسيات
            ========================================= */
         :root {
-            --primary-blue: #007AFF; /* أزرق أبل الاحترافي */
+            --primary-blue: #007AFF; 
             --secondary-blue: #005bb5;
             --light-blue: #e5f1ff;
             --bg-white: #ffffff;
@@ -47,13 +47,12 @@
             line-height: 1.7;
         }
 
-        /* شريط التمرير المخصص */
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: var(--bg-gray); }
         ::-webkit-scrollbar-thumb { background: var(--primary-blue); border-radius: 10px; }
 
         /* =========================================
-           2. شريط التنقل العلوي (Navbar - Glassmorphism)
+           2. شريط التنقل العلوي
            ========================================= */
         header {
             position: fixed;
@@ -74,7 +73,6 @@
 
         header.scrolled {
             box-shadow: var(--shadow-soft);
-            height: 70px;
         }
 
         .logo {
@@ -98,10 +96,7 @@
             letter-spacing: -0.5px;
         }
 
-        nav {
-            display: flex;
-            gap: 30px;
-        }
+        nav { display: flex; gap: 30px; }
 
         nav a {
             text-decoration: none;
@@ -115,13 +110,8 @@
         nav a:hover { color: var(--primary-blue); }
         
         nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            right: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary-blue);
+            content: ''; position: absolute; bottom: -5px; right: 0;
+            width: 0; height: 2px; background: var(--primary-blue);
             transition: width 0.3s ease;
         }
 
@@ -143,14 +133,48 @@
         }
 
         /* =========================================
-           3. قسم البداية (Hero Section & Animations)
+           3. الشريط المتحرك بالعرض (Marquee)
+           ========================================= */
+        .marquee-container {
+            width: 100%;
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            padding: 8px 0;
+            overflow: hidden;
+            position: fixed;
+            top: 80px; /* أسفل الهيدر مباشرة */
+            z-index: 999;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: scroll-left 25s linear infinite;
+        }
+
+        .marquee-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 40px;
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(50%); } /* 50% لأننا كررنا المحتوى مرتين لضمان استمرارية الحركة */
+        }
+
+        /* =========================================
+           4. قسم البداية (Hero Section & Animations)
            ========================================= */
         .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 120px 5% 50px;
+            padding: 160px 5% 50px; /* تم زيادة المساحة العلوية لتناسب الشريط المتحرك */
             background: radial-gradient(circle at 10% 20%, var(--light-blue) 0%, var(--bg-white) 100%);
             position: relative;
             overflow: hidden;
@@ -182,9 +206,7 @@
             color: var(--text-dark);
         }
 
-        .hero h1 span {
-            color: var(--primary-blue);
-        }
+        .hero h1 span { color: var(--primary-blue); }
 
         .hero p {
             font-size: 1.3rem;
@@ -193,10 +215,7 @@
             line-height: 1.8;
         }
 
-        .hero-buttons {
-            display: flex;
-            gap: 20px;
-        }
+        .hero-buttons { display: flex; gap: 20px; }
 
         .btn-primary {
             background: var(--primary-blue);
@@ -219,7 +238,7 @@
             background: var(--secondary-blue);
         }
 
-        /* --- تأثير الصورة المتحركة (The Animated Phone & Apps) --- */
+        /* --- تأثير الصورة المتحركة --- */
         .hero-image-container {
             flex: 1;
             position: relative;
@@ -230,7 +249,6 @@
             z-index: 2;
         }
 
-        /* صورة الآيفون التي أرسلتها */
         .hero-phone {
             width: 320px;
             z-index: 5;
@@ -238,24 +256,18 @@
             filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.15));
         }
 
-        /* برمجة التطبيقات المتطايرة (بديل الـ GIF) */
         .floating-apps {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             z-index: 3;
             pointer-events: none;
         }
 
         .app-icon {
             position: absolute;
-            width: 60px;
-            height: 60px;
-            background: white;
-            border-radius: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 60px; height: 60px;
+            background: white; border-radius: 16px;
+            display: flex; justify-content: center; align-items: center;
             font-size: 30px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             animation: floatUpApp 8s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
@@ -263,29 +275,24 @@
             border: 1px solid rgba(0,0,0,0.05);
         }
 
-        /* ألوان أيقونات التطبيقات المتطايرة */
-        .app-1 { bottom: 0; left: 10%; color: #25D366; animation-delay: 0s; } /* واتساب */
-        .app-2 { bottom: 0; left: 80%; color: #E1306C; animation-delay: 1.5s; } /* انستقرام */
-        .app-3 { bottom: 0; left: 30%; color: #FFFC00; background: #000; animation-delay: 3s; } /* سناب */
-        .app-4 { bottom: 0; left: 60%; color: #0088cc; animation-delay: 4.5s; } /* تلجرام */
-        .app-5 { bottom: 0; left: 45%; color: #FF0000; animation-delay: 6s; } /* يوتيوب */
+        .app-1 { bottom: 0; left: 10%; color: #25D366; animation-delay: 0s; } 
+        .app-2 { bottom: 0; left: 80%; color: #E1306C; animation-delay: 1.5s; } 
+        .app-3 { bottom: 0; left: 30%; color: #FFFC00; background: #000; animation-delay: 3s; } 
+        .app-4 { bottom: 0; left: 60%; color: #0088cc; animation-delay: 4.5s; } 
+        .app-5 { bottom: 0; left: 45%; color: #FF0000; animation-delay: 6s; } 
 
-        /* حقوق متحركة خلف الهاتف */
         .animated-copyright {
             position: absolute;
-            top: 20%;
-            right: -10%;
-            font-size: 8rem;
-            font-weight: 900;
+            top: 20%; right: -10%;
+            font-size: 8rem; font-weight: 900;
             color: rgba(0, 122, 255, 0.03);
-            white-space: nowrap;
-            z-index: 1;
+            white-space: nowrap; z-index: 1;
             user-select: none;
             animation: moveText 20s linear infinite;
         }
 
         /* =========================================
-           4. قسم الميزات (Features Section)
+           5. قسم الميزات
            ========================================= */
         .features {
             padding: 100px 5%;
@@ -293,22 +300,9 @@
             position: relative;
         }
 
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-title h2 {
-            font-size: 2.8rem;
-            color: var(--text-dark);
-            font-weight: 800;
-            margin-bottom: 15px;
-        }
-
-        .section-title p {
-            font-size: 1.2rem;
-            color: var(--text-gray);
-        }
+        .section-title { text-align: center; margin-bottom: 60px; }
+        .section-title h2 { font-size: 2.8rem; color: var(--text-dark); font-weight: 800; margin-bottom: 15px; }
+        .section-title p { font-size: 1.2rem; color: var(--text-gray); }
 
         .features-grid {
             display: grid;
@@ -318,228 +312,111 @@
 
         .feature-card {
             background: var(--bg-white);
-            padding: 40px 30px;
-            border-radius: 24px;
+            padding: 40px 30px; border-radius: 24px;
             box-shadow: var(--shadow-soft);
             border: 1px solid rgba(0,0,0,0.02);
             transition: var(--transition-smooth);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            /* كلاس الأنيميشن عند السكرول */
-            opacity: 0;
-            transform: translateY(50px);
+            text-align: center; position: relative; overflow: hidden;
+            opacity: 0; transform: translateY(50px);
         }
 
         .feature-card::before {
-            content: '';
-            position: absolute;
+            content: ''; position: absolute;
             top: 0; left: 0; width: 100%; height: 4px;
             background: var(--primary-blue);
-            transform: scaleX(0);
-            transition: var(--transition-smooth);
+            transform: scaleX(0); transition: var(--transition-smooth);
             transform-origin: right;
         }
 
         .feature-card:hover {
-            transform: translateY(-15px);
-            box-shadow: var(--shadow-hover);
+            transform: translateY(-15px); box-shadow: var(--shadow-hover);
         }
 
-        .feature-card:hover::before {
-            transform: scaleX(1);
-        }
+        .feature-card:hover::before { transform: scaleX(1); }
 
         .feature-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--light-blue);
-            color: var(--primary-blue);
+            width: 80px; height: 80px;
+            background: var(--light-blue); color: var(--primary-blue);
             border-radius: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2.5rem;
-            margin: 0 auto 20px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 2.5rem; margin: 0 auto 20px;
             transition: var(--transition-smooth);
         }
 
         .feature-card:hover .feature-icon {
-            background: var(--primary-blue);
-            color: white;
+            background: var(--primary-blue); color: white;
             transform: rotate(10deg) scale(1.1);
         }
 
-        .feature-card h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--text-dark);
-        }
-
-        .feature-card p {
-            color: var(--text-gray);
-            font-size: 1.05rem;
-            line-height: 1.6;
-        }
+        .feature-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 15px; color: var(--text-dark); }
+        .feature-card p { color: var(--text-gray); font-size: 1.05rem; line-height: 1.6; }
 
         /* =========================================
-           5. قسم الباقات (Pricing - 10,000 IQD)
+           6. قسم الباقات
            ========================================= */
-        .pricing {
-            padding: 100px 5%;
-            background: var(--bg-white);
-            text-align: center;
-        }
+        .pricing { padding: 100px 5%; background: var(--bg-white); text-align: center; }
 
         .pricing-card {
-            max-width: 450px;
-            margin: 0 auto;
-            background: var(--bg-white);
-            border-radius: 30px;
-            padding: 50px 40px;
+            max-width: 450px; margin: 0 auto;
+            background: var(--bg-white); border-radius: 30px; padding: 50px 40px;
             box-shadow: 0 20px 50px rgba(0, 122, 255, 0.1);
-            position: relative;
-            border: 2px solid var(--light-blue);
+            position: relative; border: 2px solid var(--light-blue);
             transition: var(--transition-smooth);
-            opacity: 0;
-            transform: scale(0.9);
+            opacity: 0; transform: scale(0.9);
         }
 
         .pricing-card:hover {
-            transform: scale(1.02);
-            border-color: var(--primary-blue);
+            transform: scale(1.02); border-color: var(--primary-blue);
             box-shadow: 0 30px 60px rgba(0, 122, 255, 0.15);
         }
 
-        /* شريط "الأكثر طلباً" */
         .ribbon {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
             background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-            color: white;
-            padding: 8px 25px;
-            border-radius: 20px;
-            font-weight: 800;
-            font-size: 1rem;
-            box-shadow: 0 5px 15px rgba(0, 122, 255, 0.3);
+            color: white; padding: 8px 25px; border-radius: 20px;
+            font-weight: 800; font-size: 1rem; box-shadow: 0 5px 15px rgba(0, 122, 255, 0.3);
         }
 
-        .pricing-card h3 {
-            font-size: 2rem;
-            color: var(--text-dark);
-            margin-bottom: 10px;
-            margin-top: 20px;
-        }
-
+        .pricing-card h3 { font-size: 2rem; color: var(--text-dark); margin-bottom: 10px; margin-top: 20px; }
+        
         .price-tag {
-            font-size: 4.5rem;
-            font-weight: 900;
-            color: var(--primary-blue);
-            margin: 20px 0;
-            display: flex;
-            justify-content: center;
-            align-items: baseline;
-            gap: 5px;
+            font-size: 4.5rem; font-weight: 900; color: var(--primary-blue); margin: 20px 0;
+            display: flex; justify-content: center; align-items: baseline; gap: 5px;
         }
 
-        .price-tag span {
-            font-size: 1.5rem;
-            color: var(--text-gray);
-            font-weight: 600;
-        }
+        .price-tag span { font-size: 1.5rem; color: var(--text-gray); font-weight: 600; }
 
-        .pricing-list {
-            list-style: none;
-            margin: 30px 0 40px;
-            text-align: right;
-        }
-
-        .pricing-list li {
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-            color: var(--text-dark);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .pricing-list li i {
-            color: #25D366; /* لون علامة الصح */
-            font-size: 1.2rem;
-            background: rgba(37, 211, 102, 0.1);
-            padding: 5px;
-            border-radius: 50%;
-        }
+        .pricing-list { list-style: none; margin: 30px 0 40px; text-align: right; }
+        .pricing-list li { margin-bottom: 15px; font-size: 1.1rem; color: var(--text-dark); display: flex; align-items: center; gap: 10px; }
+        .pricing-list li i { color: #25D366; font-size: 1.2rem; background: rgba(37, 211, 102, 0.1); padding: 5px; border-radius: 50%; }
 
         .btn-pricing {
-            display: block;
-            width: 100%;
-            background: var(--primary-blue);
-            color: white;
-            padding: 18px;
-            border-radius: 20px;
-            font-size: 1.3rem;
-            font-weight: 800;
-            text-decoration: none;
-            transition: var(--transition-smooth);
+            display: block; width: 100%; background: var(--primary-blue); color: white;
+            padding: 18px; border-radius: 20px; font-size: 1.3rem; font-weight: 800;
+            text-decoration: none; transition: var(--transition-smooth);
             box-shadow: 0 10px 20px rgba(0, 122, 255, 0.25);
         }
 
-        .btn-pricing:hover {
-            background: var(--secondary-blue);
-            transform: translateY(-3px);
-        }
+        .btn-pricing:hover { background: var(--secondary-blue); transform: translateY(-3px); }
 
         /* =========================================
-           6. قسم التواصل والروابط (Links Section)
+           7. قسم التواصل والروابط
            ========================================= */
-        .contact {
-            padding: 80px 5%;
-            background: var(--bg-gray);
-        }
-
-        .links-container {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
+        .contact { padding: 80px 5%; background: var(--bg-gray); }
+        .links-container { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
 
         .social-card {
-            background: var(--bg-white);
-            width: 350px;
-            padding: 30px;
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            text-decoration: none;
-            color: var(--text-dark);
-            box-shadow: var(--shadow-soft);
-            border: 1px solid rgba(0,0,0,0.02);
-            transition: var(--transition-smooth);
-            opacity: 0;
-            transform: translateY(30px);
+            background: var(--bg-white); width: 350px; padding: 30px; border-radius: 24px;
+            display: flex; align-items: center; gap: 20px; text-decoration: none; color: var(--text-dark);
+            box-shadow: var(--shadow-soft); border: 1px solid rgba(0,0,0,0.02);
+            transition: var(--transition-smooth); opacity: 0; transform: translateY(30px);
         }
 
-        .social-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-hover);
-            border-color: var(--light-blue);
-        }
+        .social-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-hover); border-color: var(--light-blue); }
 
         .social-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2rem;
-            color: white;
+            width: 70px; height: 70px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-size: 2rem; color: white;
         }
 
         .telegram-bg { background: linear-gradient(135deg, #0088cc, #00aaff); box-shadow: 0 10px 20px rgba(0, 136, 204, 0.3);}
@@ -549,27 +426,14 @@
         .social-text p { color: var(--text-gray); font-family: sans-serif; letter-spacing: 1px;}
 
         /* =========================================
-           7. التذييل (Footer)
+           8. التذييل
            ========================================= */
-        footer {
-            background: var(--text-dark);
-            color: white;
-            text-align: center;
-            padding: 40px 5%;
-        }
-
-        footer p {
-            color: rgba(255,255,255,0.6);
-            font-size: 1.1rem;
-        }
-
-        footer span {
-            color: var(--primary-blue);
-            font-weight: 700;
-        }
+        footer { background: var(--text-dark); color: white; text-align: center; padding: 40px 5%; }
+        footer p { color: rgba(255,255,255,0.6); font-size: 1.1rem; }
+        footer span { color: var(--primary-blue); font-weight: 700; }
 
         /* =========================================
-           8. الإطارات المفتاحية والحركات (Keyframes)
+           9. الإطارات المفتاحية والحركات
            ========================================= */
         @keyframes floatPhone {
             0% { transform: translateY(0px) rotate(0deg); }
@@ -584,28 +448,18 @@
             100% { transform: translateY(-400px) scale(0.5); opacity: 0; }
         }
 
-        @keyframes moveText {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
+        @keyframes moveText { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* كلاسات الجافاسكربت للانتقالات الناعمة عند السكرول */
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+        .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
 
-        /* =========================================
-           9. التجاوب مع الشاشات (Responsive Design)
-           ========================================= */
         @media (max-width: 991px) {
-            .hero { flex-direction: column; text-align: center; padding-top: 150px; }
+            .hero { flex-direction: column; text-align: center; padding-top: 180px; }
             .hero-content { margin-bottom: 50px; }
             .hero h1 { font-size: 3rem; }
             .hero-buttons { justify-content: center; }
             .hero-phone { width: 250px; }
             .animated-copyright { font-size: 4rem; }
-            nav { display: none; } /* يمكن إضافة قائمة همبرغر هنا لاحقاً */
+            nav { display: none; }
         }
     </style>
 </head>
@@ -614,8 +468,8 @@
     <!-- الترويسة الزجاجية -->
     <header id="navbar">
         <a href="#" class="logo">
-            <img src="https://k.top4top.io/p_38796b6nb0.jpeg" alt="شعار حساني">
-            <span>متجر حساني</span>
+            <img src="https://k.top4top.io/p_38796b6nb0.jpeg" alt="شعار الحسني">
+            <span>متجر الحسني</span>
         </a>
         <nav>
             <a href="#hero">الرئيسية</a>
@@ -625,9 +479,27 @@
         <a href="#pricing" class="btn-nav">اشترك الآن</a>
     </header>
 
-    <!-- قسم البداية (الهيرو) مع الأنيميشن -->
+    <!-- الشريط المتحرك بالعرض -->
+    <div class="marquee-container" dir="ltr">
+        <div class="marquee-content">
+            <!-- المحتوى الأول -->
+            <span class="marquee-item"><i class="fas fa-crown"></i> متجر الحسني الأفضل في العراق</span>
+            <span class="marquee-item"><i class="fab fa-apple"></i> تطبيقات بلس بأدوات أصلية</span>
+            <span class="marquee-item"><i class="fas fa-bolt"></i> تفعيل فوري ومباشر</span>
+            <span class="marquee-item"><i class="fas fa-clone"></i> تكرار غير محدود</span>
+            <span class="marquee-item"><i class="fas fa-shield-alt"></i> ضمان 30 يوم</span>
+            <!-- المحتوى مكرر لضمان انسيابية الحركة وعدم الانقطاع -->
+            <span class="marquee-item"><i class="fas fa-crown"></i> متجر الحسني الأفضل في العراق</span>
+            <span class="marquee-item"><i class="fab fa-apple"></i> تطبيقات بلس بأدوات أصلية</span>
+            <span class="marquee-item"><i class="fas fa-bolt"></i> تفعيل فوري ومباشر</span>
+            <span class="marquee-item"><i class="fas fa-clone"></i> تكرار غير محدود</span>
+            <span class="marquee-item"><i class="fas fa-shield-alt"></i> ضمان 30 يوم</span>
+        </div>
+    </div>
+
+    <!-- قسم البداية -->
     <section id="hero" class="hero">
-        <div class="animated-copyright">HASSANY IPA STORE 2026</div>
+        <div class="animated-copyright">AL-HASANI IPA STORE 2026</div>
         
         <div class="hero-content">
             <div class="hero-badge"><i class="fas fa-crown"></i> الخيار الأول في العراق</div>
@@ -639,7 +511,6 @@
         </div>
 
         <div class="hero-image-container">
-            <!-- التطبيقات المتطايرة (محاكاة للـ GIF) -->
             <div class="floating-apps">
                 <div class="app-icon app-1"><i class="fab fa-whatsapp"></i></div>
                 <div class="app-icon app-2"><i class="fab fa-instagram"></i></div>
@@ -647,7 +518,6 @@
                 <div class="app-icon app-4"><i class="fab fa-telegram-plane"></i></div>
                 <div class="app-icon app-5"><i class="fab fa-youtube"></i></div>
             </div>
-            <!-- صورة الآيفون المفرغة -->
             <img src="https://c.top4top.io/p_3879gfxy73.png" alt="iPhone Preview" class="hero-phone">
         </div>
     </section>
@@ -655,7 +525,7 @@
     <!-- قسم المميزات -->
     <section id="features" class="features">
         <div class="section-title">
-            <h2>ليش تختار متجر حساني؟</h2>
+            <h2>ليش تختار متجر الحسني؟</h2>
             <p>صممنا المتجر بأحدث التقنيات ليوفر لك كل ما تحتاجه</p>
         </div>
         <div class="features-grid">
@@ -677,7 +547,7 @@
         </div>
     </section>
 
-    <!-- قسم الباقات 10,000 -->
+    <!-- قسم الباقات -->
     <section id="pricing" class="pricing">
         <div class="section-title">
             <h2>باقة الـ VIP الموحدة</h2>
@@ -696,7 +566,7 @@
                 <li><i class="fas fa-check"></i> وصول كامل لجميع تطبيقات البلس</li>
                 <li><i class="fas fa-check"></i> تكرار التطبيقات لامحدود</li>
                 <li><i class="fas fa-check"></i> ألعاب مهكرة بأدوات حصرية</li>
-                <li><i class="fas fa-check"></i> تعويض مجاني في حال إغلاق الشهادة</li>
+                <li><i class="fas fa-check"></i> تعويض مجاني (الضمان 30 يوم)</li>
                 <li><i class="fas fa-check"></i> دعم فني متواجد دائماً لخدمتك</li>
             </ul>
             
@@ -731,47 +601,30 @@
 
     <!-- التذييل -->
     <footer>
-        <p>&copy; 2026 <span>متجر حساني IPA</span>. جميع الحقوق محفوظة.</p>
+        <p>&copy; 2026 <span>متجر الحسني IPA</span>. جميع الحقوق محفوظة.</p>
         <p style="font-size: 0.9rem; margin-top: 10px; opacity: 0.5;">تم التصميم باحترافية عالية ليتناسب مع ذوقك</p>
     </footer>
 
-    <!-- سكريبت الحركات والتأثيرات (Scroll Reveal & Navbar) -->
+    <!-- سكريبت الحركات والتأثيرات -->
     <script>
-        // تأثير شريط التنقل عند النزول
         window.addEventListener('scroll', () => {
             const header = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
+            if (window.scrollY > 50) { header.classList.add('scrolled'); } 
+            else { header.classList.remove('scrolled'); }
         });
 
-        // تأثير ظهور العناصر بانسيابية عند الوصول إليها (Scroll Reveal)
         const revealElements = document.querySelectorAll('.reveal');
-        
         const revealCallback = (entries, observer) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    // اختياري: إذا أردت أن يظهر مرة واحدة فقط
-                    // observer.unobserve(entry.target);
-                }
+                if (entry.isIntersecting) { entry.target.classList.add('active'); }
             });
         };
 
-        const revealOptions = {
-            threshold: 0.15, // يظهر العنصر عندما يظهر 15% منه في الشاشة
-            rootMargin: "0px 0px -50px 0px"
-        };
-
+        const revealOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
         const revealObserver = new IntersectionObserver(revealCallback, revealOptions);
 
-        revealElements.forEach(el => {
-            revealObserver.observe(el);
-        });
+        revealElements.forEach(el => { revealObserver.observe(el); });
 
-        // تأثير تموج (Ripple Effect) للأزرار
         const buttons = document.querySelectorAll('.btn-primary, .btn-pricing');
         buttons.forEach(btn => {
             btn.addEventListener('click', function(e) {
@@ -779,32 +632,19 @@
                 let y = e.clientY - e.target.offsetTop;
                 
                 let ripples = document.createElement('span');
-                ripples.style.left = x + 'px';
-                ripples.style.top = y + 'px';
-                ripples.style.position = 'absolute';
-                ripples.style.background = 'rgba(255,255,255,0.3)';
-                ripples.style.transform = 'translate(-50%, -50%)';
-                ripples.style.borderRadius = '50%';
+                ripples.style.left = x + 'px'; ripples.style.top = y + 'px';
+                ripples.style.position = 'absolute'; ripples.style.background = 'rgba(255,255,255,0.3)';
+                ripples.style.transform = 'translate(-50%, -50%)'; ripples.style.borderRadius = '50%';
                 ripples.style.animation = 'animateRipple 0.6s linear';
-                ripples.style.width = '200px';
-                ripples.style.height = '200px';
-                ripples.style.pointerEvents = 'none';
+                ripples.style.width = '200px'; ripples.style.height = '200px'; ripples.style.pointerEvents = 'none';
                 
                 this.appendChild(ripples);
-                
-                setTimeout(() => {
-                    ripples.remove();
-                }, 600);
+                setTimeout(() => { ripples.remove(); }, 600);
             });
         });
     </script>
-    
-    <!-- CSS إضافي لتأثير التموج -->
     <style>
-        .btn-primary, .btn-pricing {
-            position: relative;
-            overflow: hidden;
-        }
+        .btn-primary, .btn-pricing { position: relative; overflow: hidden; }
         @keyframes animateRipple {
             0% { width: 0px; height: 0px; opacity: 0.5; }
             100% { width: 500px; height: 500px; opacity: 0; }
